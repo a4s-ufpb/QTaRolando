@@ -1,4 +1,4 @@
-# local_events
+# AppEvents
 
 A new Flutter project.
 
