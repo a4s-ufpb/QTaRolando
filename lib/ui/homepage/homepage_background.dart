@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../app_state.dart';
 
 class HomePageBackground extends StatelessWidget {
   final screenHeight;
@@ -8,14 +11,11 @@ class HomePageBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Theme.of(context);
+    final appState = Provider.of<AppState>(context);
+    final Color colorBackground = appState.colorPrimary;
 
-    return ClipPath(
-      clipper: BottomShapeClipper(),
-      child: Container(
-        height: screenHeight * 0.55,
-        color: themeData.primaryColor,
-      ),
+    return Container(
+      color: colorBackground,
     );
   }
 }

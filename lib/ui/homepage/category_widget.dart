@@ -4,49 +4,63 @@ import 'package:local_events/models/category.dart';
 import 'package:local_events/styleguide.dart';
 import 'package:provider/provider.dart';
 
-class CategoryWidget extends StatelessWidget {
+class CategoryWidget extends StatefulWidget {
   final Category category;
 
   const CategoryWidget({Key key, this.category}) : super(key: key);
 
   @override
+  _CategoryWidgetState createState() => _CategoryWidgetState();
+}
+
+class _CategoryWidgetState extends State<CategoryWidget> {
+  @override
   Widget build(BuildContext context) {
     final appState = Provider.of<AppState>(context);
-    final isSelected = appState.selectedCategoryId == category.categoryId;
+    final isSelected =
+        appState.selectedCategoryId == widget.category.categoryId;
 
-    return GestureDetector(
-      onTap: () {
-        if (!isSelected) {
-          appState.UpdateCategoryId(category.categoryId);
-        }
-      },
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8),
-        width: 90,
-        height: 90,
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: isSelected ? Colors.white : Color(0x99FFFFFF),
-            width: 3,
-          ),
-          borderRadius: BorderRadius.all(Radius.circular(16)),
-          color: isSelected ? Colors.white : Colors.transparent,
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 300),
+      margin: const EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 0.8, vertical: 0.8),
+      width: isSelected ? 75 : 70,
+      height: isSelected ? 75 : 70,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: isSelected ? Colors.white : Color(0x99FFFFFF),
+          width: 2,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(
-              category.icon,
-              color: isSelected ? Theme.of(context).primaryColor : Colors.white,
-              size: 40,
-            ),
-            SizedBox(height: 10),
-            Text(
-              category.name,
-              style: isSelected ? selectedCategoryTextStyle : categoryTextStyle,
-            )
-          ],
+        borderRadius: BorderRadius.all(Radius.circular(16)),
+        color: isSelected ? Colors.white : Colors.transparent,
+      ),
+      child: InkWell(
+        onTap: () {
+          if (!isSelected) {
+            appState.UpdateCategoryId(
+                widget.category.categoryId, widget.category.color);
+          }
+        },
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Icon(
+                widget.category.icon,
+                color: isSelected ? widget.category.color : Colors.white,
+                size: isSelected ? 30 : 25,
+              ),
+              SizedBox(height: 4),
+              Text(
+                widget.category.name,
+                style: isSelected
+                    ? selectedCategoryTextStyle.copyWith(
+                        color: widget.category.color)
+                    : categoryTextStyle,
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -7,21 +7,20 @@ class EventDetailsBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final event = Provider.of<Event>(context);
+    final evento = Provider.of<Evento>(context);
 
     return Align(
       alignment: Alignment.topCenter,
-      child: ClipPath(
-        clipper: ImageClipper(),
+      child: Hero(
+        tag: evento,
         child: Container(
-          color: Colors.grey,
-          child: Image.asset(
-            event.imagePath,
-            fit: BoxFit.fitWidth,
+          child: Image.network(
+            evento.imagePath,
+            fit: BoxFit.cover,
+            height: screenHeight * 0.7,
             width: screenWidth,
             color: Color(0x99000000),
             colorBlendMode: BlendMode.darken,
-            height: screenHeight * 0.5,
           ),
         ),
       ),
