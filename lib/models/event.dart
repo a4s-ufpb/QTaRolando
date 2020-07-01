@@ -1,4 +1,4 @@
-class Event {
+class Evento {
   final String imagePath,
       title,
       description,
@@ -8,7 +8,7 @@ class Event {
       punchLine2;
   final List categoryIds, galleryImages;
 
-  Event({
+  Evento({
     this.imagePath,
     this.title,
     this.description,
@@ -19,55 +19,33 @@ class Event {
     this.categoryIds,
     this.galleryImages,
   });
+
+  factory Evento.fromJson(Map<String, dynamic> json) {
+    return Evento(
+      categoryIds: [0, json["categoryId"]],
+      description: json["description"] as String,
+      duration: json["duration"] as String,
+      imagePath: json["imagePath"] as String,
+      location: json["location"] as String,
+      punchLine1: json["punchLine1"] as String,
+      punchLine2: json["punchLine2"] as String,
+      title: json["title"] as String,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        "categoryId": categoryIds[1] as int,
+        "description": description,
+        "duration": duration,
+        "imagePath": imagePath,
+        "location": location,
+        "punchLine1": punchLine1,
+        "punchLine2": punchLine2,
+        "title": title,
+      };
+
+  static List<Evento> fromJsonList(List list) {
+    if (list == null) return null;
+    return list.map((evento) => Evento.fromJson(evento)).toList();
+  }
 }
-
-final fivekmRunEvent = Event(
-  imagePath: "",
-  title: "fivekmRunEvent",
-  description: "Local com a descrição do evento para o usuário.",
-  duration: "3h",
-  location: "fivekmRunEvent",
-  punchLine1: "Frase! ",
-  punchLine2: "Que resume o evento",
-  categoryIds: [0, 1],
-);
-
-final coockingEvent = Event(
-  imagePath: "",
-  title: "coockingEvent",
-  description: "Local com a descrição do evento para o usuário.",
-  duration: "3h",
-  location: "coockingEvent",
-  punchLine1: "Frase! ",
-  punchLine2: "Que resume o evento",
-  categoryIds: [0, 2],
-);
-
-final musicEvent = Event(
-  imagePath: "",
-  title: "musicEvent",
-  description: "Local com a descrição do evento para o usuário.",
-  duration: "3h",
-  location: "musicEvent",
-  punchLine1: "Frase! ",
-  punchLine2: "Que resume o evento",
-  categoryIds: [0, 1],
-);
-
-final golfCompetition = Event(
-  imagePath: "",
-  title: "golfCompetition",
-  description: "Local com a descrição do evento para o usuário.",
-  duration: "3h",
-  location: "golfCompetition",
-  punchLine1: "Frase! ",
-  punchLine2: "Que resume o evento",
-  categoryIds: [0, 2],
-);
-
-final events = [
-  fivekmRunEvent,
-  coockingEvent,
-  musicEvent,
-  golfCompetition,
-];
