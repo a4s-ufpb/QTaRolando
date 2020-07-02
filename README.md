@@ -1,16 +1,19 @@
 # QTaRolando
 
-A new Flutter project.
+Este é um app desenvolvido, em Flutter e Dart, para o projeto de Extensão Apps4Society do Campus IV - UFPB, em Rio Tinto, cujo o objetivo é oferecer, de forma simples e fácil, tanto a visualização quanto as informações de eventos, inicialmente com o foco aos relacionados a UFPB, no estado da Paraíba.
 
-## Getting Started
+## App preview
 
-This project is a starting point for a Flutter application.
+![QTaRolando_demo.gif](https://github.com/a4s-ufpb/QTaRolando/blob/master/QTaRolando_demo.gif)
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Introdução
+Este projeto é um ponto de partida para um aplicativo Flutter.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Alguns recursos para você começar se este é seu primeiro projeto Flutter:
+
+- [Laboratório: escreva seu primeiro aplicativo Flutter](https://flutter.dev/docs/get-started/codelab
+
+Para obter ajuda sobre como iniciar o Flutter, consulte nossa
+[documentação online](https://flutter.dev/docs), que oferece tutoriais,
+exemplos e orientações sobre desenvolvimento para dispositivos móveis e uma referência completa da API.
