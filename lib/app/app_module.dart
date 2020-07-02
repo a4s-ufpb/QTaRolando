@@ -14,7 +14,8 @@ class AppModule extends ModuleWidget {
   @override
   List<Dependency> get dependencies => [
         Dependency((i) => AppRepository(i.get<HasuraConnect>())),
-        Dependency((i) => HasuraConnect("address of your Hasura database")),
+        Dependency((i) =>
+            HasuraConnect("https://qtarolando.herokuapp.com/v1/graphql")),
       ];
 
   @override
