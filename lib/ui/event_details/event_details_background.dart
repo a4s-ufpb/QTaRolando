@@ -17,7 +17,7 @@ class EventDetailsBackground extends StatelessWidget {
           child: Image.network(
             evento.imagePath,
             fit: BoxFit.cover,
-            height: screenHeight * 0.7,
+            height: screenHeight * 0.4,
             width: screenWidth,
             color: Color(0x99000000),
             colorBlendMode: BlendMode.darken,

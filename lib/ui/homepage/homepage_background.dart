@@ -15,7 +15,8 @@ class HomePageBackground extends StatelessWidget {
     final Color colorBackground = appState.colorPrimary;
 
     return Container(
-      color: colorBackground,
+      // color: Color(0xFF202124),
+      color: Colors.white,
     );
   }
 }

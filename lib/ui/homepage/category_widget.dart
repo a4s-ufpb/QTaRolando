@@ -27,13 +27,12 @@ class _CategoryWidgetState extends State<CategoryWidget> {
       width: isSelected ? 75 : 70,
       height: isSelected ? 75 : 70,
       decoration: BoxDecoration(
-        border: Border.all(
-          color: isSelected ? Colors.white : Color(0x99FFFFFF),
-          width: 2,
-        ),
-        borderRadius: BorderRadius.all(Radius.circular(16)),
-        color: isSelected ? Colors.white : Colors.transparent,
-      ),
+          border: Border.all(
+            color: isSelected ? appState.colorPrimary : Color(0xFF444444),
+            width: 2,
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+          color: isSelected ? appState.colorPrimary : Colors.transparent),
       child: InkWell(
         onTap: () {
           if (!isSelected) {
@@ -48,16 +47,15 @@ class _CategoryWidgetState extends State<CategoryWidget> {
             children: <Widget>[
               Icon(
                 widget.category.icon,
-                color: isSelected ? widget.category.color : Colors.white,
+                color: isSelected ? Colors.white : Color(0xFF444444),
                 size: isSelected ? 30 : 25,
               ),
               SizedBox(height: 4),
               Text(
                 widget.category.name,
                 style: isSelected
-                    ? selectedCategoryTextStyle.copyWith(
-                        color: widget.category.color)
-                    : categoryTextStyle,
+                    ? selectedCategoryTextStyle.copyWith(color: Colors.white)
+                    : categoryTextStyle.copyWith(color: Color(0xFF444444)),
               )
             ],
           ),

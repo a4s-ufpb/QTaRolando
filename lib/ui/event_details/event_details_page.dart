@@ -20,7 +20,7 @@ class EventDetailsPage extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: <Widget>[
-            EventDetailsBackground(),
+            //EventDetailsBackground(),
             EventDetailsContent(colorPunchLine1: appState.colorPrimary),
           ],
         ),
