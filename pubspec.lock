@@ -91,7 +91,7 @@ packages:
       name: file
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.2.0"
+    version: "5.2.1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -99,6 +99,11 @@ packages:
     version: "0.0.0"
   flutter_test:
     dependency: "direct dev"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
+  flutter_web_plugins:
+    dependency: transitive
     description: flutter
     source: sdk
     version: "0.0.0"
@@ -185,7 +190,7 @@ packages:
       name: path_provider_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.1+1"
+    version: "0.0.1+2"
   path_provider_macos:
     dependency: transitive
     description:
@@ -256,34 +261,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.24.1"
-  sa_anicoto:
-    dependency: transitive
-    description:
-      name: sa_anicoto
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.2"
-  sa_multi_tween:
-    dependency: transitive
-    description:
-      name: sa_multi_tween
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.1"
-  sa_stateless_animation:
-    dependency: transitive
-    description:
-      name: sa_stateless_animation
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.1"
-  sa_v1_migration:
-    dependency: transitive
-    description:
-      name: sa_v1_migration
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.2"
   share:
     dependency: "direct main"
     description:
@@ -291,13 +268,34 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.4+3"
-  simple_animations:
+  shared_preferences:
     dependency: "direct main"
     description:
-      name: simple_animations
+      name: shared_preferences
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.1"
+    version: "0.5.7+3"
+  shared_preferences_macos:
+    dependency: transitive
+    description:
+      name: shared_preferences_macos
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1+10"
+  shared_preferences_platform_interface:
+    dependency: transitive
+    description:
+      name: shared_preferences_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.4"
+  shared_preferences_web:
+    dependency: transitive
+    description:
+      name: shared_preferences_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.2+7"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -331,13 +329,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.5"
-  supercharged:
-    dependency: transitive
-    description:
-      name: supercharged
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.6.0"
   term_glyph:
     dependency: transitive
     description:
