@@ -13,7 +13,7 @@ class AppWidget extends StatelessWidget {
       title: 'QTaRolando?',
       theme: ThemeData(
         scaffoldBackgroundColor: Color(0xFFFFFFFF),
-        primaryColor: Color(0xFF6b4a3f),
+        primaryColor: Color(0xFFF4F4F4),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: HomePage(),
