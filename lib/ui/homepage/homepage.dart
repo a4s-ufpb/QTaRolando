@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:local_events/app/app_module.dart';
@@ -23,13 +26,24 @@ class _HomePageState extends State<HomePage> {
 
   String searchResult;
   bool isSearching;
+  TextEditingController searchTextController = new TextEditingController();
+  FocusNode focusInput = new FocusNode();
+
+  bool hasInternet = true;
 
   @override
   void initState() {
     super.initState();
     searchResult = "";
     isSearching = false;
+    _checkStatus();
     _getEventos();
+  }
+
+  @override
+  void dispose() {
+    searchTextController.dispose();
+    super.dispose();
   }
 
   @override
@@ -40,17 +54,33 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  _checkStatus() {
+    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      if (result == ConnectivityResult.mobile ||
+          result == ConnectivityResult.wifi) {
+        setState(() {
+          hasInternet = true;
+        });
+      } else {
+        setState(() {
+          hasInternet = false;
+        });
+      }
+    });
+  }
+
   _getEventos() {
     setState(() {
       _eventos = repository.getEventosStream();
     });
   }
 
-  Widget buildListByCategory(List<Evento> lista, AppState appState) {
+  Widget buildListByCategory(
+      List<Evento> lista, AppState appState, height, width) {
     bool categoryIsEmpty = true;
     List<Widget> list = new List<Widget>();
     List<Widget> filtredList = new List<Widget>();
-    if (isSearching && searchResult != "") {
+    if (searchResult != "") {
       for (Evento evento in lista) {
         if (evento.title.toLowerCase().contains(searchResult.toLowerCase()) &&
             evento.categoryIds.contains(appState.selectedCategoryId)) {
@@ -61,7 +91,6 @@ class _HomePageState extends State<HomePage> {
           categoryIsEmpty = false;
         }
       }
-      print(filtredList.length);
 
       list.clear();
       list = filtredList;
@@ -79,8 +108,8 @@ class _HomePageState extends State<HomePage> {
 
     if (categoryIsEmpty) {
       return Container(
-        height: MediaQuery.of(context).size.height * 0.6,
-        width: MediaQuery.of(context).size.width,
+        height: (height > 596.5) ? (height * 0.7) : (height * 0.6),
+        width: width,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -132,13 +161,16 @@ class _HomePageState extends State<HomePage> {
 
   changeSearching() {
     setState(() {
-      isSearching = !isSearching;
       searchResult = "";
+      searchTextController.clear();
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -154,7 +186,7 @@ class _HomePageState extends State<HomePage> {
             builder: (context, appState, _) => Stack(
               children: <Widget>[
                 HomePageBackground(
-                  screenHeight: MediaQuery.of(context).size.height,
+                  screenHeight: screenHeight,
                 ),
                 SafeArea(
                   child: Column(
@@ -162,82 +194,108 @@ class _HomePageState extends State<HomePage> {
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 8),
+                            horizontal: 16.0, vertical: 16),
                         child: Row(
                           children: <Widget>[
                             Text(
-                              "Eventos Locais",
-                              style: fadedTextStyle,
+                              "QTáRolando?",
+                              style: whiteHeadingTextStyle.copyWith(
+                                  color: appState.colorPrimary, fontSize: 35),
                             ),
                             Spacer(),
-                            Icon(
-                              FontAwesomeIcons.user,
-                              color: fadedTextStyle.color,
-                              size: 20,
+                            Container(
+                              alignment: Alignment.center,
+                              height: 42,
+                              width: 42,
+                              decoration: BoxDecoration(
+                                color: Colors.black12,
+                                shape: BoxShape.circle,
+                              ),
+                              // child: Icon(
+                              //   FontAwesomeIcons.user,
+                              //   color: Colors.white,
+                              //   size: 20,
+                              // ),
                             )
                           ],
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: !isSearching
-                            ? InkWell(
-                                onTap: changeSearching,
-                                child: Text(
-                                  "QTaRolando?",
-                                  style: whiteHeadingTextStyle.copyWith(
-                                      color: appState.colorPrimary),
+                        child: AnimatedContainer(
+                          duration: Duration(milliseconds: 500),
+                          height: 50,
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          decoration: BoxDecoration(
+                            color: (focusInput.hasFocus || searchResult != "")
+                                ? Colors.white
+                                : Colors.white.withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Expanded(
+                                child: TextField(
+                                  enabled: hasInternet ? true : false,
+                                  textAlignVertical: TextAlignVertical.top,
+                                  focusNode: focusInput,
+                                  controller: searchTextController,
+                                  maxLines: 1,
+                                  cursorColor: Theme.of(context)
+                                      .textSelectionHandleColor,
+                                  style: fadedTextStyle.copyWith(fontSize: 16),
+                                  decoration: InputDecoration(
+                                    contentPadding:
+                                        EdgeInsets.symmetric(vertical: -5),
+                                    icon: FaIcon(
+                                      hasInternet
+                                          ? FontAwesomeIcons.search
+                                          : FontAwesomeIcons.lock,
+                                      color: (focusInput.hasFocus ||
+                                              searchResult != "")
+                                          ? appState.colorPrimary
+                                          : appState.colorPrimary
+                                              .withOpacity(0.8),
+                                    ),
+                                    hintText: "Pesquisar ...",
+                                    hintStyle: fadedTextStyle.copyWith(
+                                      fontSize: 16,
+                                      color:
+                                          fadedTextStyle.color.withOpacity(0.5),
+                                    ),
+                                    border: InputBorder.none,
+                                  ),
+                                  onChanged: (string) {
+                                    setState(() {
+                                      searchResult = string;
+                                    });
+                                  },
                                 ),
-                              )
-                            : Row(
-                                children: <Widget>[
-                                  Flexible(
-                                    child: TextField(
-                                      cursorColor: appState.colorPrimary,
-                                      autofocus: true,
-                                      style: whiteHeadingTextStyle.copyWith(
-                                        color: appState.colorPrimary,
-                                      ),
-                                      decoration: InputDecoration(
-                                        contentPadding:
-                                            EdgeInsets.symmetric(vertical: -5),
-                                        hintText: "Pesquisar ...",
-                                        enabledBorder: InputBorder.none,
-                                        focusColor: appState.colorPrimary,
-                                      ),
-                                      onChanged: (string) {
-                                        setState(() {
-                                          searchResult = string;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                  InkWell(
-                                    onTap: changeSearching,
-                                    child: Container(
-                                      width: whiteHeadingTextStyle.fontSize,
-                                      height: whiteHeadingTextStyle.fontSize,
-                                      child: Icon(
-                                        FontAwesomeIcons.times,
-                                        color: appState.colorPrimary,
-                                      ),
-                                    ),
-                                  ),
-                                ],
                               ),
+                              searchResult != ""
+                                  ? InkWell(
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 5, vertical: 5),
+                                        child: FaIcon(
+                                          FontAwesomeIcons.times,
+                                          size: 18,
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        changeSearching();
+                                      },
+                                    )
+                                  : Container(),
+                            ],
+                          ),
+                        ),
                       ),
                       Container(
                         decoration: BoxDecoration(
-                          // color: Color(0xFF202124),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color(0x99000000),
-                              blurRadius: 2.0,
-                              spreadRadius: -4,
-                              offset: Offset(0, 3),
-                            ),
-                          ],
+                          color: Colors.transparent,
                         ),
                         child: Padding(
                           padding: const EdgeInsets.only(top: 20.0, bottom: 10),
@@ -256,36 +314,101 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       Expanded(
-                        child: Consumer<AppState>(
-                          builder: (context, appState, _) => RefreshIndicator(
-                            onRefresh: refreshList,
-                            child: StreamBuilder<List<Evento>>(
-                              stream: _eventos,
-                              builder: (context, snapshot) {
-                                if (!snapshot.hasData)
-                                  return Center(
-                                    child: CircularProgressIndicator(
-                                      backgroundColor: Colors.grey,
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                          appState.colorPrimary),
-                                    ),
-                                  );
-                                return SingleChildScrollView(
-                                  scrollDirection: Axis.vertical,
-                                  physics: BouncingScrollPhysics(),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16.0),
-                                    child: Container(
-                                      child: buildListByCategory(
-                                          snapshot.data.toList(), appState),
-                                    ),
+                        child: hasInternet
+                            ? Consumer<AppState>(
+                                builder: (context, appState, _) =>
+                                    RefreshIndicator(
+                                        backgroundColor: Colors.white,
+                                        color: fadedTextStyle.color,
+                                        onRefresh: refreshList,
+                                        child: StreamBuilder<List<Evento>>(
+                                          stream: _eventos,
+                                          builder: (context, snapshot) {
+                                            if (!snapshot.hasData)
+                                              return Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  backgroundColor: Colors.grey,
+                                                  valueColor:
+                                                      AlwaysStoppedAnimation<
+                                                              Color>(
+                                                          appState
+                                                              .colorPrimary),
+                                                ),
+                                              );
+                                            return ScrollConfiguration(
+                                              behavior: ScrollBehavior(),
+                                              child: GlowingOverscrollIndicator(
+                                                color: appState.colorPrimary,
+                                                axisDirection:
+                                                    AxisDirection.down,
+                                                child: ListView(
+                                                  physics:
+                                                      AlwaysScrollableScrollPhysics(),
+                                                  children: <Widget>[
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 16.0),
+                                                      child: Container(
+                                                        child:
+                                                            buildListByCategory(
+                                                                snapshot.data
+                                                                    .toList(),
+                                                                appState,
+                                                                screenHeight,
+                                                                screenWidth),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        )),
+                              )
+                            : Center(
+                                child: Container(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Stack(
+                                        alignment: Alignment.bottomCenter,
+                                        children: <Widget>[
+                                          Icon(
+                                            FontAwesomeIcons.wifi,
+                                            size: 40,
+                                            color: appState.colorPrimary,
+                                          ),
+                                          Icon(
+                                            FontAwesomeIcons.slash,
+                                            size: 45,
+                                            color: Colors.white,
+                                          ),
+                                          Icon(
+                                            FontAwesomeIcons.slash,
+                                            size: 40,
+                                            color: appState.colorPrimary,
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        "Internet indisponível!",
+                                        style: fadedTextStyle.copyWith(
+                                            fontSize: 18),
+                                      ),
+                                      Text(
+                                        "Tente novamente.",
+                                        style: fadedTextStyle.copyWith(
+                                            fontSize: 18),
+                                      ),
+                                    ],
                                   ),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
+                                ),
+                              ),
                       ),
                     ],
                   ),

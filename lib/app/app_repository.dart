@@ -19,6 +19,9 @@ class AppRepository extends Disposable {
           punchLine1
           punchLine2
           title
+          date
+          site
+          phone
         }
       }
       """;
@@ -40,6 +43,9 @@ class AppRepository extends Disposable {
           punchLine1
           punchLine2
           title
+          date
+          site
+          phone
         }
       }
       """;

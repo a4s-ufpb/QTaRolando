@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 final TextStyle fadedTextStyle = GoogleFonts.sourceSansPro(
   fontSize: 14,
-  fontWeight: FontWeight.bold,
+  fontWeight: FontWeight.w600,
   color: Color(0xFF444444),
 );
 

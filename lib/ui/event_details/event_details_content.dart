@@ -1,9 +1,11 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:local_events/models/event.dart';
 import 'package:local_events/styleguide.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class EventDetailsContent extends StatefulWidget {
   final Color colorPunchLine1;
@@ -36,96 +38,94 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
       resizeToAvoidBottomInset: false,
       body: Column(
         children: <Widget>[
-          Expanded(
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  height: screenWidth,
-                  decoration: BoxDecoration(
+          Stack(
+            children: <Widget>[
+              Container(
+                height: screenHeight * 0.5,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(30)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      offset: Offset(0, 2),
+                      blurRadius: 6.0,
+                    ),
+                  ],
+                ),
+                child: Hero(
+                  tag: evento.imagePath,
+                  child: ClipRRect(
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(30),
                         bottomRight: Radius.circular(30)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black26,
-                        offset: Offset(0, 2),
-                        blurRadius: 6.0,
-                      ),
-                    ],
-                  ),
-                  child: Hero(
-                    tag: evento.imagePath,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(30),
-                          bottomRight: Radius.circular(30)),
-                      child: Image.network(
-                        evento.imagePath,
-                        fit: BoxFit.cover,
-                        color: Color(0x70000000),
-                        colorBlendMode: BlendMode.darken,
-                      ),
+                    child: Image.network(
+                      evento.imagePath,
+                      fit: BoxFit.cover,
+                      color: Color(0x70000000),
+                      colorBlendMode: BlendMode.darken,
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 30.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      IconButton(
-                        icon: Icon(
-                          Icons.arrow_back_ios,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 30.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.white,
                       ),
-                      IconButton(
-                        icon: FaIcon(
-                          FontAwesomeIcons.share,
-                          color: Colors.white,
-                        ),
-                        onPressed: () => share(context, evento),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    IconButton(
+                      icon: FaIcon(
+                        FontAwesomeIcons.share,
+                        color: Colors.white,
                       ),
-                    ],
-                  ),
+                      onPressed: () => share(context, evento),
+                    ),
+                  ],
                 ),
-                Positioned(
-                  left: 20,
-                  bottom: 20,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        evento.title,
-                        style: eventwhiteTitleTextStyle,
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Icon(
-                            FontAwesomeIcons.locationArrow,
-                            size: 10,
+              ),
+              Positioned(
+                left: 20,
+                bottom: 20,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      evento.title,
+                      style: eventwhiteTitleTextStyle,
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Icon(
+                          FontAwesomeIcons.locationArrow,
+                          size: 10,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          evento.location,
+                          style: eventLocationTextStyle.copyWith(
                             color: Colors.white,
+                            fontWeight: FontWeight.w700,
                           ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            evento.location,
-                            style: eventLocationTextStyle.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
           Expanded(
             child: SingleChildScrollView(
@@ -140,9 +140,12 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                       text: TextSpan(
                         children: [
                           TextSpan(
-                              text: evento.punchLine1,
-                              style: punchLine1TextStyle.copyWith(
-                                  color: widget.colorPunchLine1)),
+                            text: evento.punchLine1,
+                            style: punchLine1TextStyle.copyWith(
+                              color: widget.colorPunchLine1,
+                              letterSpacing: -1.08,
+                            ),
+                          ),
                           TextSpan(
                             text: evento.punchLine2,
                             style: punchLine2TextStyle,
@@ -151,7 +154,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                       ),
                     ),
                   ),
-                  if (evento.description.isNotEmpty)
+                  if (evento.description != null)
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Row(
@@ -169,12 +172,144 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                   Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: Text(
-                      evento.description,
-                      style: eventLocationTextStyle.copyWith(
-                        fontSize: 18,
-                        color: Color(0xFF444444),
+                    child: RichText(
+                      softWrap: true,
+                      textAlign: TextAlign.justify,
+                      text: TextSpan(
+                        text: evento.description,
+                        style: eventLocationTextStyle.copyWith(
+                          fontSize: 18,
+                          color: Color(0xFF444444),
+                        ),
                       ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16, top: 16),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Data:",
+                          style: eventLocationTextStyle.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 4, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: widget.colorPunchLine1,
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                          ),
+                          child: Center(
+                            child: Icon(
+                              Icons.calendar_today,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          evento.date,
+                          style: eventLocationTextStyle.copyWith(
+                            color: Color(0xFF444444),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16, top: 8),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Mais informações:",
+                          style: eventLocationTextStyle.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (evento.phone != null && evento.phone != "")
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 8),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 4, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: widget.colorPunchLine1,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5)),
+                            ),
+                            child: Center(
+                              child: Icon(
+                                Icons.phone,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            evento.phone,
+                            style: eventLocationTextStyle.copyWith(
+                              color: Color(0xFF444444),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 16, bottom: 16, top: 8),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 4, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: widget.colorPunchLine1,
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                          ),
+                          child: Center(
+                            child: Icon(
+                              Icons.link,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        InkWell(
+                          onTap: () async {
+                            if (await canLaunch(evento.site)) {
+                              await launch(evento.site);
+                            }
+                          },
+                          child: Text(
+                            evento.site,
+                            style: eventLocationTextStyle.copyWith(
+                              decoration: TextDecoration.underline,
+                              color: Colors.blue,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

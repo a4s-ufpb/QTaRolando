@@ -4,8 +4,11 @@ class Evento {
       description,
       location,
       duration,
+      date,
+      site,
       punchLine1,
-      punchLine2;
+      punchLine2,
+      phone;
   final List categoryIds, galleryImages;
 
   Evento({
@@ -14,8 +17,11 @@ class Evento {
     this.description,
     this.location,
     this.duration,
+    this.date,
+    this.site,
     this.punchLine1,
     this.punchLine2,
+    this.phone,
     this.categoryIds,
     this.galleryImages,
   });
@@ -30,6 +36,9 @@ class Evento {
       punchLine1: json["punchLine1"] as String,
       punchLine2: json["punchLine2"] as String,
       title: json["title"] as String,
+      date: json["date"] as String,
+      site: json["site"] as String,
+      phone: json["phone"] as String,
     );
   }
 
@@ -42,6 +51,9 @@ class Evento {
         "punchLine1": punchLine1,
         "punchLine2": punchLine2,
         "title": title,
+        "date": date,
+        "site": site,
+        "phone": phone,
       };
 
   static List<Evento> fromJsonList(List list) {

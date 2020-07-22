@@ -29,20 +29,6 @@ class EventWidget extends StatelessWidget {
                 EventDetailsPage(evento: evento, appState: appState),
           ),
         );
-        // Navigator.of(context).push(
-        //   PageRouteBuilder(
-        //     pageBuilder: (context, animation1, animation2) => EventDetailsPage(
-        //       evento: evento,
-        //       appState: appState,
-        //     ),
-        //     transitionsBuilder: (context, animation1, animation2, child) {
-        //       return FadeTransition(
-        //         opacity: animation1,
-        //         child: child,
-        //       );
-        //     },
-        //   ),
-        // );
       },
       child: Card(
         margin: const EdgeInsets.symmetric(vertical: 15),

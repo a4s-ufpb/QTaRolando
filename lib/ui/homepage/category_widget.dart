@@ -20,24 +20,30 @@ class _CategoryWidgetState extends State<CategoryWidget> {
     final isSelected =
         appState.selectedCategoryId == widget.category.categoryId;
 
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 300),
+    return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 0.8, vertical: 0.8),
-      width: isSelected ? 75 : 70,
-      height: isSelected ? 75 : 70,
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-          border: Border.all(
-            color: isSelected ? appState.colorPrimary : Color(0xFF444444),
-            width: 2,
-          ),
-          borderRadius: BorderRadius.all(Radius.circular(16)),
-          color: isSelected ? appState.colorPrimary : Colors.transparent),
+        border: Border.all(
+          color: isSelected
+              ? appState.colorPrimary.withOpacity(0.2)
+              : Colors.black54,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(50)),
+        color: isSelected ? appState.colorPrimary : Colors.transparent,
+      ),
       child: InkWell(
         onTap: () {
           if (!isSelected) {
             appState.UpdateCategoryId(
                 widget.category.categoryId, widget.category.color);
+          }
+
+          FocusScopeNode currentFocus = FocusScope.of(context);
+
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
           }
         },
         child: Center(
@@ -45,17 +51,15 @@ class _CategoryWidgetState extends State<CategoryWidget> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Icon(
-                widget.category.icon,
-                color: isSelected ? Colors.white : Color(0xFF444444),
-                size: isSelected ? 30 : 25,
-              ),
-              SizedBox(height: 4),
-              Text(
-                widget.category.name,
+              AnimatedDefaultTextStyle(
                 style: isSelected
-                    ? selectedCategoryTextStyle.copyWith(color: Colors.white)
+                    ? selectedCategoryTextStyle.copyWith(
+                        color: Colors.white,
+                        fontSize: 16,
+                      )
                     : categoryTextStyle.copyWith(color: Color(0xFF444444)),
+                duration: Duration(milliseconds: 300),
+                child: Text(widget.category.name),
               )
             ],
           ),
