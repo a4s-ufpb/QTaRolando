@@ -9,8 +9,10 @@ import 'event_details_content.dart';
 class EventDetailsPage extends StatelessWidget {
   final Evento evento;
   final AppState appState;
+  final bool themeIsDark;
 
-  const EventDetailsPage({Key key, this.evento, this.appState})
+  const EventDetailsPage(
+      {Key key, this.evento, this.appState, this.themeIsDark})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,10 @@ class EventDetailsPage extends StatelessWidget {
           fit: StackFit.expand,
           children: <Widget>[
             //EventDetailsBackground(),
-            EventDetailsContent(colorPunchLine1: appState.colorPrimary),
+            EventDetailsContent(
+              colorPunchLine1: appState.colorPrimary,
+              themeIsDark: this.themeIsDark,
+            ),
           ],
         ),
       ),

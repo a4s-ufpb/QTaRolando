@@ -20,7 +20,7 @@ class HomePageBackground extends StatelessWidget {
         Container(
           height: MediaQuery.of(context).size.height * 0.5,
           decoration: BoxDecoration(
-            color: colorBackground.withOpacity(0.35),
+            color: Colors.black12,
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(30),
                 bottomRight: Radius.circular(30)),

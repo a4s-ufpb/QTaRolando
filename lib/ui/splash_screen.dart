@@ -4,7 +4,8 @@ import 'package:local_events/ui/homepage/homepage.dart';
 import 'package:splashscreen/splashscreen.dart';
 
 class SplashScreenWidget extends StatefulWidget {
-  SplashScreenWidget({Key key}) : super(key: key);
+  Color backgroundColor;
+  SplashScreenWidget({Key key, this.backgroundColor}) : super(key: key);
 
   @override
   _SplashScrenWidgetState createState() => _SplashScrenWidgetState();
@@ -19,7 +20,7 @@ class _SplashScrenWidgetState extends State<SplashScreenWidget> {
         children: <Widget>[
           SplashScreen(
             seconds: 2,
-            backgroundColor: Colors.white,
+            backgroundColor: widget.backgroundColor,
             navigateAfterSeconds: HomePage(),
             loaderColor: Colors.transparent,
           ),

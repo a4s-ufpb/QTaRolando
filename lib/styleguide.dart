@@ -1,6 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+final lightTheme = ThemeData(
+  scaffoldBackgroundColor: Color(0xFFFFFFFF),
+  primaryColor: Color(0xFFF4F4F4),
+  visualDensity: VisualDensity.adaptivePlatformDensity,
+  textSelectionColor: Colors.black45,
+  textTheme: TextTheme(
+    headline1: GoogleFonts.montserrat(
+        fontSize: 35, fontWeight: FontWeight.bold, color: Color(0xFFFFFFFF)),
+  ),
+);
+
+final darkTheme = ThemeData(
+  scaffoldBackgroundColor: Color(0xFF212226),
+  primaryColor: Color(0xFF212226),
+  visualDensity: VisualDensity.adaptivePlatformDensity,
+  textSelectionColor: Colors.black45,
+  textTheme: TextTheme(
+    headline1: GoogleFonts.montserrat(
+        fontSize: 35, fontWeight: FontWeight.bold, color: Color(0xFFFFFFFF)),
+  ),
+);
+
 final TextStyle fadedTextStyle = GoogleFonts.sourceSansPro(
   fontSize: 14,
   fontWeight: FontWeight.w600,
@@ -14,7 +36,7 @@ final TextStyle whiteHeadingTextStyle = GoogleFonts.montserrat(
 );
 
 final TextStyle categoryTextStyle = GoogleFonts.sourceSansPro(
-  fontSize: 11,
+  fontSize: 13,
   fontWeight: FontWeight.bold,
   color: Color(0xFFFFFFFF),
 );
@@ -49,7 +71,7 @@ final TextStyle eventLocationTextStyle = GoogleFonts.sourceSansPro(
 );
 
 final TextStyle punchLine1TextStyle = GoogleFonts.montserrat(
-  fontSize: 24,
+  fontSize: 21,
   fontWeight: FontWeight.w800,
   color: Color(0xFF13A8AE),
 );

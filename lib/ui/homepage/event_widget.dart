@@ -10,12 +10,17 @@ import '../../app_state.dart';
 class EventWidget extends StatelessWidget {
   final Evento evento;
   final AppState appState;
+  final bool themeIsDark;
 
-  const EventWidget({Key key, this.evento, this.appState}) : super(key: key);
+  const EventWidget({Key key, this.evento, this.appState, this.themeIsDark})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      focusColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
 
@@ -25,8 +30,11 @@ class EventWidget extends StatelessWidget {
 
         Navigator.of(context).push(
           CupertinoPageRoute(
-            builder: (context) =>
-                EventDetailsPage(evento: evento, appState: appState),
+            builder: (context) => EventDetailsPage(
+              evento: evento,
+              appState: appState,
+              themeIsDark: themeIsDark,
+            ),
           ),
         );
       },
@@ -69,31 +77,34 @@ class EventWidget extends StatelessWidget {
                           Text(
                             evento.title,
                             style: eventTitleTextStyle.copyWith(
-                              color: Colors.white,
+                              color: themeIsDark
+                                  ? Color(0xFF212226)
+                                  : Colors.white,
                             ),
                           ),
                           SizedBox(height: 10),
                           FittedBox(
-                            child: Hero(
-                              tag: evento.location,
-                              child: Material(
-                                color: Colors.transparent,
-                                child: Row(
-                                  children: <Widget>[
-                                    Icon(
-                                      FontAwesomeIcons.locationArrow,
-                                      size: eventLocationTextStyle.fontSize,
-                                      color: Colors.white,
+                            child: Material(
+                              color: Colors.transparent,
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(
+                                    FontAwesomeIcons.locationArrow,
+                                    size: eventLocationTextStyle.fontSize,
+                                    color: themeIsDark
+                                        ? Color(0xFF212226)
+                                        : Colors.white,
+                                  ),
+                                  SizedBox(width: 5),
+                                  Text(
+                                    evento.location,
+                                    style: eventLocationTextStyle.copyWith(
+                                      color: themeIsDark
+                                          ? Color(0xFF212226)
+                                          : Colors.white,
                                     ),
-                                    SizedBox(width: 5),
-                                    Text(
-                                      evento.location,
-                                      style: eventLocationTextStyle.copyWith(
-                                        color: Colors.white,
-                                      ),
-                                    )
-                                  ],
-                                ),
+                                  )
+                                ],
                               ),
                             ),
                           ),
@@ -107,7 +118,7 @@ class EventWidget extends StatelessWidget {
                         textAlign: TextAlign.right,
                         style: eventLocationTextStyle.copyWith(
                           fontWeight: FontWeight.w900,
-                          color: Colors.white,
+                          color: themeIsDark ? Color(0xFF212226) : Colors.white,
                         ),
                       ),
                     ),

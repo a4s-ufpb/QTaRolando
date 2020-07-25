@@ -14,7 +14,7 @@ final tudoCategory = Category(
   categoryId: 0,
   name: "Tudo",
   icon: FontAwesomeIcons.search,
-  color: Color(0xFF795548),
+  color: Color(0xFF8c5b4d),
 );
 
 final musicaCategory = Category(

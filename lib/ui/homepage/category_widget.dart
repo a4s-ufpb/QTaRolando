@@ -6,8 +6,10 @@ import 'package:provider/provider.dart';
 
 class CategoryWidget extends StatefulWidget {
   final Category category;
+  final bool themeIsDark;
 
-  const CategoryWidget({Key key, this.category}) : super(key: key);
+  const CategoryWidget({Key key, this.category, this.themeIsDark})
+      : super(key: key);
 
   @override
   _CategoryWidgetState createState() => _CategoryWidgetState();
@@ -26,14 +28,19 @@ class _CategoryWidgetState extends State<CategoryWidget> {
       decoration: BoxDecoration(
         border: Border.all(
           color: isSelected
-              ? appState.colorPrimary.withOpacity(0.2)
-              : Colors.black54,
-          width: 2,
+              ? Colors.transparent
+              : widget.themeIsDark ? Colors.white38 : Colors.black26,
+          width: 1,
         ),
         borderRadius: BorderRadius.all(Radius.circular(50)),
-        color: isSelected ? appState.colorPrimary : Colors.transparent,
+        color: isSelected
+            ? appState.colorPrimary.withOpacity(0.25)
+            : Colors.transparent,
       ),
       child: InkWell(
+        focusColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        splashColor: Colors.transparent,
         onTap: () {
           if (!isSelected) {
             appState.UpdateCategoryId(
@@ -54,11 +61,14 @@ class _CategoryWidgetState extends State<CategoryWidget> {
               AnimatedDefaultTextStyle(
                 style: isSelected
                     ? selectedCategoryTextStyle.copyWith(
-                        color: Colors.white,
-                        fontSize: 16,
+                        color: appState.colorPrimary,
+                        fontSize: 15,
                       )
-                    : categoryTextStyle.copyWith(color: Color(0xFF444444)),
-                duration: Duration(milliseconds: 300),
+                    : categoryTextStyle.copyWith(
+                        color: widget.themeIsDark
+                            ? Colors.white70
+                            : Color(0xFF444444)),
+                duration: Duration(milliseconds: 100),
                 child: Text(widget.category.name),
               )
             ],

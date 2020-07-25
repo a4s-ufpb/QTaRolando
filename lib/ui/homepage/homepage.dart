@@ -10,6 +10,8 @@ import 'package:local_events/models/event.dart';
 import 'package:local_events/styleguide.dart';
 import 'package:local_events/ui/homepage/category_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../app_state.dart';
 import 'event_widget.dart';
@@ -31,9 +33,14 @@ class _HomePageState extends State<HomePage> {
 
   bool hasInternet = true;
 
+  bool themeIsDark = false;
+  ThemeData themeData = ThemeData();
+
   @override
   void initState() {
     super.initState();
+    _getThemeFromSharedPref();
+    _setThemeData();
     searchResult = "";
     isSearching = false;
     _checkStatus();
@@ -51,6 +58,31 @@ class _HomePageState extends State<HomePage> {
     super.didChangeDependencies();
     setState(() {
       _getEventos();
+    });
+  }
+
+  Future<void> _getThemeFromSharedPref() async {
+    final prefs = await SharedPreferences.getInstance();
+    this.setState(() {
+      themeIsDark = prefs.getBool("themeDark") ?? false;
+    });
+  }
+
+  Future<void> _setThemeForSharedPref() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool("themeDark", !themeIsDark);
+    this.setState(() {
+      themeIsDark = prefs.getBool("themeDark");
+    });
+    _setThemeData();
+  }
+
+  void _setThemeData() {
+    this.setState(() {
+      themeData = new ThemeData(
+        textSelectionHandleColor:
+            themeIsDark ? Colors.white : Color(0xFF444444),
+      );
     });
   }
 
@@ -87,6 +119,7 @@ class _HomePageState extends State<HomePage> {
           filtredList.add(new EventWidget(
             evento: evento,
             appState: appState,
+            themeIsDark: this.themeIsDark,
           ));
           categoryIsEmpty = false;
         }
@@ -100,6 +133,7 @@ class _HomePageState extends State<HomePage> {
           list.add(new EventWidget(
             evento: evento,
             appState: appState,
+            themeIsDark: this.themeIsDark,
           ));
           categoryIsEmpty = false;
         }
@@ -127,7 +161,10 @@ class _HomePageState extends State<HomePage> {
               (searchResult != "")
                   ? "Nenhum evento encontrado!"
                   : "Não há eventos no momento!",
-              style: fadedTextStyle.copyWith(fontSize: 18),
+              style: fadedTextStyle.copyWith(
+                fontSize: 18,
+                color: themeIsDark ? Colors.white38 : fadedTextStyle.color,
+              ),
             ),
           ],
         ),
@@ -154,7 +191,7 @@ class _HomePageState extends State<HomePage> {
   Future<Null> refreshList() async {
     await Future.delayed(Duration(seconds: 2));
 
-    repository.getEventosStream();
+    _getEventos();
 
     return null;
   }
@@ -164,6 +201,88 @@ class _HomePageState extends State<HomePage> {
       searchResult = "";
       searchTextController.clear();
     });
+  }
+
+  Widget shimmerEffect() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Card(
+        margin: const EdgeInsets.symmetric(vertical: 15),
+        elevation: 5,
+        color: themeIsDark ? Color(0xFF3C4043) : Color(0xFFF1F3F4),
+        shadowColor: Colors.black,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Shimmer.fromColors(
+                baseColor: Colors.black38,
+                highlightColor: Colors.black12,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  child: Container(
+                    height: 70,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8, left: 8),
+                child: Shimmer.fromColors(
+                  baseColor: Colors.black38,
+                  highlightColor: Colors.black12,
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 3,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                                width: 125, height: 25, color: Colors.white),
+                            SizedBox(height: 10),
+                            FittedBox(
+                              child: Material(
+                                color: Colors.transparent,
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(
+                                      FontAwesomeIcons.locationArrow,
+                                      size: eventLocationTextStyle.fontSize,
+                                      color: themeIsDark
+                                          ? Color(0xFF212226)
+                                          : Colors.white,
+                                    ),
+                                    SizedBox(width: 5),
+                                    Container(
+                                        width: 150,
+                                        height: 15,
+                                        color: Colors.white),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                            width: 50, height: 25, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -180,13 +299,35 @@ class _HomePageState extends State<HomePage> {
         }
       },
       child: Scaffold(
+        backgroundColor: themeIsDark ? Color(0xFF212226) : Colors.white,
         body: ChangeNotifierProvider<AppState>(
           create: (_) => AppState(),
           child: Consumer<AppState>(
             builder: (context, appState, _) => Stack(
               children: <Widget>[
-                HomePageBackground(
-                  screenHeight: screenHeight,
+                Stack(
+                  children: <Widget>[
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.5,
+                      decoration: BoxDecoration(
+                        color: themeIsDark ? Colors.white10 : Colors.black12,
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(30),
+                            bottomRight: Radius.circular(30)),
+                      ),
+                    ),
+                    Container(
+                      // color: Color(0xFF202124),
+                      height: MediaQuery.of(context).size.height * 0.5,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        image: DecorationImage(
+                          alignment: Alignment.bottomLeft,
+                          image: AssetImage("assets/images/sky_background.png"),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 SafeArea(
                   child: Column(
@@ -203,19 +344,16 @@ class _HomePageState extends State<HomePage> {
                                   color: appState.colorPrimary, fontSize: 35),
                             ),
                             Spacer(),
-                            Container(
-                              alignment: Alignment.center,
-                              height: 42,
-                              width: 42,
-                              decoration: BoxDecoration(
-                                color: Colors.black12,
-                                shape: BoxShape.circle,
+                            IconButton(
+                              icon: Icon(
+                                themeIsDark
+                                    ? FontAwesomeIcons.sun
+                                    : FontAwesomeIcons.moon,
+                                color: themeIsDark
+                                    ? Colors.white
+                                    : Color(0xFF212226),
                               ),
-                              // child: Icon(
-                              //   FontAwesomeIcons.user,
-                              //   color: Colors.white,
-                              //   size: 20,
-                              // ),
+                              onPressed: () => _setThemeForSharedPref(),
                             )
                           ],
                         ),
@@ -223,15 +361,28 @@ class _HomePageState extends State<HomePage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: AnimatedContainer(
-                          duration: Duration(milliseconds: 500),
+                          duration: Duration(milliseconds: 100),
                           height: 50,
                           padding: EdgeInsets.symmetric(horizontal: 20),
                           decoration: BoxDecoration(
-                            color: (focusInput.hasFocus || searchResult != "")
-                                ? Colors.white
-                                : Colors.white.withOpacity(0.5),
-                            borderRadius: BorderRadius.circular(30),
-                          ),
+                              color: (focusInput.hasFocus || searchResult != "")
+                                  ? themeIsDark
+                                      ? Color(0xFF474C4F)
+                                      : Colors.white
+                                  : themeIsDark
+                                      ? Color(0xFF212226)
+                                      : Colors.white,
+                              borderRadius: BorderRadius.circular(50),
+                              boxShadow:
+                                  (focusInput.hasFocus || searchResult != "")
+                                      ? [
+                                          BoxShadow(
+                                            color: Colors.black26,
+                                            offset: Offset(0, 1),
+                                            blurRadius: 3.0,
+                                          ),
+                                        ]
+                                      : []),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -243,9 +394,14 @@ class _HomePageState extends State<HomePage> {
                                   focusNode: focusInput,
                                   controller: searchTextController,
                                   maxLines: 1,
-                                  cursorColor: Theme.of(context)
-                                      .textSelectionHandleColor,
-                                  style: fadedTextStyle.copyWith(fontSize: 16),
+                                  cursorColor:
+                                      themeData.textSelectionHandleColor,
+                                  style: fadedTextStyle.copyWith(
+                                    fontSize: 16,
+                                    color: themeIsDark
+                                        ? Colors.white
+                                        : fadedTextStyle.color,
+                                  ),
                                   decoration: InputDecoration(
                                     contentPadding:
                                         EdgeInsets.symmetric(vertical: -5),
@@ -255,15 +411,21 @@ class _HomePageState extends State<HomePage> {
                                           : FontAwesomeIcons.lock,
                                       color: (focusInput.hasFocus ||
                                               searchResult != "")
-                                          ? appState.colorPrimary
-                                          : appState.colorPrimary
-                                              .withOpacity(0.8),
+                                          ? themeIsDark
+                                              ? Colors.white
+                                              : fadedTextStyle.color
+                                          : themeIsDark
+                                              ? Colors.white38
+                                              : fadedTextStyle.color
+                                                  .withOpacity(0.7),
                                     ),
                                     hintText: "Pesquisar ...",
                                     hintStyle: fadedTextStyle.copyWith(
                                       fontSize: 16,
-                                      color:
-                                          fadedTextStyle.color.withOpacity(0.5),
+                                      color: themeIsDark
+                                          ? Colors.white38
+                                          : fadedTextStyle.color
+                                              .withOpacity(0.5),
                                     ),
                                     border: InputBorder.none,
                                   ),
@@ -306,7 +468,10 @@ class _HomePageState extends State<HomePage> {
                               children: <Widget>[
                                 Container(width: 8),
                                 for (final category in categories)
-                                  CategoryWidget(category: category),
+                                  CategoryWidget(
+                                    category: category,
+                                    themeIsDark: this.themeIsDark,
+                                  ),
                                 Container(width: 8),
                               ],
                             ),
@@ -318,23 +483,20 @@ class _HomePageState extends State<HomePage> {
                             ? Consumer<AppState>(
                                 builder: (context, appState, _) =>
                                     RefreshIndicator(
-                                        backgroundColor: Colors.white,
+                                        backgroundColor: themeIsDark
+                                            ? Color(0xFF212226)
+                                            : Colors.white,
                                         color: fadedTextStyle.color,
                                         onRefresh: refreshList,
                                         child: StreamBuilder<List<Evento>>(
                                           stream: _eventos,
                                           builder: (context, snapshot) {
                                             if (!snapshot.hasData)
-                                              return Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  backgroundColor: Colors.grey,
-                                                  valueColor:
-                                                      AlwaysStoppedAnimation<
-                                                              Color>(
-                                                          appState
-                                                              .colorPrimary),
-                                                ),
+                                              return ListView.builder(
+                                                itemCount: 10,
+                                                // Important code
+                                                itemBuilder: (context, index) =>
+                                                    shimmerEffect(),
                                               );
                                             return ScrollConfiguration(
                                               behavior: ScrollBehavior(),
@@ -383,7 +545,9 @@ class _HomePageState extends State<HomePage> {
                                           Icon(
                                             FontAwesomeIcons.slash,
                                             size: 45,
-                                            color: Colors.white,
+                                            color: themeIsDark
+                                                ? Color(0xFF212226)
+                                                : Colors.white,
                                           ),
                                           Icon(
                                             FontAwesomeIcons.slash,
