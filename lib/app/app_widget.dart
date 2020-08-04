@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:local_events/ui/splash_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,6 +32,11 @@ class _AppWidgetState extends State<AppWidget> {
       [DeviceOrientation.portraitUp],
     );
     return MaterialApp(
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate
+      ],
+      supportedLocales: [const Locale('pt', 'BR')],
       debugShowCheckedModeBanner: false,
       title: 'QTaRolando?',
       theme: ThemeData(

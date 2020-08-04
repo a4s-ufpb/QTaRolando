@@ -24,7 +24,7 @@ class EventDetailsPage extends StatelessWidget {
           children: <Widget>[
             //EventDetailsBackground(),
             EventDetailsContent(
-              colorPunchLine1: appState.colorPrimary,
+              appState: appState,
               themeIsDark: this.themeIsDark,
             ),
           ],

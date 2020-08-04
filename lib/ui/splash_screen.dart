@@ -29,6 +29,13 @@ class _SplashScrenWidgetState extends State<SplashScreenWidget> {
               height: 104,
               width: 100,
               decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black26,
+                      offset: Offset(0, 2),
+                      blurRadius: 3)
+                ],
                 image: DecorationImage(
                   image: AssetImage("assets/icons/app_icon.png"),
                   fit: BoxFit.fill,
@@ -48,7 +55,7 @@ class _SplashScrenWidgetState extends State<SplashScreenWidget> {
                       "from",
                       style: fadedTextStyle.copyWith(
                         fontSize: 20,
-                        color: fadedTextStyle.color.withOpacity(0.5),
+                        color: Colors.grey[300],
                       ),
                     ),
                   ),

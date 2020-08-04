@@ -13,13 +13,13 @@ class AppRepository extends Disposable {
         eventos(order_by: {id: desc}) {
           categoryId
           description
-          duration
+          initialDate
+          finalDate
           imagePath
           location
           punchLine1
           punchLine2
           title
-          date
           site
           phone
         }
@@ -37,13 +37,13 @@ class AppRepository extends Disposable {
         eventos(order_by: {id: desc}) {
           categoryId
           description
-          duration
+          initialDate
+          finalDate
           imagePath
           location
           punchLine1
           punchLine2
           title
-          date
           site
           phone
         }

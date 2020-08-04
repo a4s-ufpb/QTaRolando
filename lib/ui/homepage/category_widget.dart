@@ -24,18 +24,28 @@ class _CategoryWidgetState extends State<CategoryWidget> {
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
         border: Border.all(
           color: isSelected
-              ? Colors.transparent
+              ? appState.colorPrimary.withOpacity(0.05)
               : widget.themeIsDark ? Colors.white38 : Colors.black26,
           width: 1,
         ),
         borderRadius: BorderRadius.all(Radius.circular(50)),
-        color: isSelected
-            ? appState.colorPrimary.withOpacity(0.25)
-            : Colors.transparent,
+        gradient: LinearGradient(
+          colors: isSelected
+              ? [
+                  appState.colorPrimary,
+                  appState.colorSecundary,
+                ]
+              : [
+                  Colors.transparent,
+                  Colors.transparent,
+                ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
       ),
       child: InkWell(
         focusColor: Colors.transparent,
@@ -43,8 +53,8 @@ class _CategoryWidgetState extends State<CategoryWidget> {
         splashColor: Colors.transparent,
         onTap: () {
           if (!isSelected) {
-            appState.UpdateCategoryId(
-                widget.category.categoryId, widget.category.color);
+            appState.UpdateCategoryId(widget.category.categoryId,
+                widget.category.colorPrimary, widget.category.colorSecundary);
           }
 
           FocusScopeNode currentFocus = FocusScope.of(context);
@@ -54,22 +64,30 @@ class _CategoryWidgetState extends State<CategoryWidget> {
           }
         },
         child: Center(
-          child: Column(
+          child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              AnimatedDefaultTextStyle(
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: Icon(
+                  widget.category.icon,
+                  size: 15,
+                  color: isSelected
+                      ? Colors.white
+                      : widget.themeIsDark ? Colors.white70 : Color(0xFF444444),
+                ),
+              ),
+              Text(
+                widget.category.name,
                 style: isSelected
                     ? selectedCategoryTextStyle.copyWith(
-                        color: appState.colorPrimary,
-                        fontSize: 15,
+                        color: Colors.white,
                       )
                     : categoryTextStyle.copyWith(
                         color: widget.themeIsDark
                             ? Colors.white70
                             : Color(0xFF444444)),
-                duration: Duration(milliseconds: 100),
-                child: Text(widget.category.name),
               )
             ],
           ),

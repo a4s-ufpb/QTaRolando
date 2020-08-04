@@ -15,7 +15,6 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../app_state.dart';
 import 'event_widget.dart';
-import 'homepage_background.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -40,7 +39,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _getThemeFromSharedPref();
-    _setThemeData();
     searchResult = "";
     isSearching = false;
     _checkStatus();
@@ -58,31 +56,6 @@ class _HomePageState extends State<HomePage> {
     super.didChangeDependencies();
     setState(() {
       _getEventos();
-    });
-  }
-
-  Future<void> _getThemeFromSharedPref() async {
-    final prefs = await SharedPreferences.getInstance();
-    this.setState(() {
-      themeIsDark = prefs.getBool("themeDark") ?? false;
-    });
-  }
-
-  Future<void> _setThemeForSharedPref() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool("themeDark", !themeIsDark);
-    this.setState(() {
-      themeIsDark = prefs.getBool("themeDark");
-    });
-    _setThemeData();
-  }
-
-  void _setThemeData() {
-    this.setState(() {
-      themeData = new ThemeData(
-        textSelectionHandleColor:
-            themeIsDark ? Colors.white : Color(0xFF444444),
-      );
     });
   }
 
@@ -104,6 +77,32 @@ class _HomePageState extends State<HomePage> {
   _getEventos() {
     setState(() {
       _eventos = repository.getEventosStream();
+    });
+  }
+
+  Future<void> _getThemeFromSharedPref() async {
+    final prefs = await SharedPreferences.getInstance();
+    this.setState(() {
+      themeIsDark = prefs.getBool("themeDark") ?? false;
+    });
+    _setThemeData();
+  }
+
+  Future<void> _setThemeForSharedPref() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool("themeDark", !themeIsDark);
+    this.setState(() {
+      themeIsDark = prefs.getBool("themeDark");
+    });
+    _setThemeData();
+  }
+
+  void _setThemeData() {
+    this.setState(() {
+      themeData = new ThemeData(
+        textSelectionHandleColor:
+            themeIsDark ? Colors.white : Color(0xFF444444),
+      );
     });
   }
 
@@ -142,27 +141,39 @@ class _HomePageState extends State<HomePage> {
 
     if (categoryIsEmpty) {
       return Container(
-        height: (height > 596.5) ? (height * 0.7) : (height * 0.6),
+        padding: const EdgeInsets.only(
+          top: 150,
+          bottom: 50,
+        ),
         width: width,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Icon(
-              (searchResult != "")
-                  ? FontAwesomeIcons.search
-                  : FontAwesomeIcons.heartBroken,
-              size: 40,
-              color: appState.colorPrimary,
-            ),
-            SizedBox(
-              height: 10,
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12.0),
+              child: ShaderMask(
+                shaderCallback: (bounds) => LinearGradient(
+                  colors: [appState.colorPrimary, appState.colorSecundary],
+                  tileMode: TileMode.mirror,
+                ).createShader(bounds),
+                child: Container(
+                  height: 45,
+                  child: Icon(
+                    (searchResult != "")
+                        ? FontAwesomeIcons.search
+                        : FontAwesomeIcons.heartBroken,
+                    size: 40,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ),
             Text(
               (searchResult != "")
                   ? "Nenhum evento encontrado!"
                   : "Não há eventos no momento!",
               style: fadedTextStyle.copyWith(
-                fontSize: 18,
+                fontSize: 16,
                 color: themeIsDark ? Colors.white38 : fadedTextStyle.color,
               ),
             ),
@@ -203,35 +214,150 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  Widget searchBar() {
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 100),
+      height: 50,
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      decoration: BoxDecoration(
+        color: (focusInput.hasFocus || searchResult != "")
+            ? themeIsDark ? Color(0xFF212226) : Colors.white
+            : themeIsDark ? Color(0xFF212226) : Colors.white,
+        borderRadius: BorderRadius.circular(50),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Expanded(
+            child: TextField(
+              textAlignVertical: TextAlignVertical.top,
+              focusNode: focusInput,
+              controller: searchTextController,
+              maxLines: 1,
+              cursorColor: themeData.textSelectionHandleColor,
+              style: fadedTextStyle.copyWith(
+                fontSize: 16,
+                color: themeIsDark ? Colors.white : fadedTextStyle.color,
+              ),
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(vertical: -5),
+                icon: FaIcon(
+                  FontAwesomeIcons.search,
+                  color: (focusInput.hasFocus || searchResult != "")
+                      ? themeIsDark ? Colors.white : fadedTextStyle.color
+                      : themeIsDark
+                          ? Colors.white38
+                          : fadedTextStyle.color.withOpacity(0.7),
+                ),
+                hintText: "Pesquisar por um evento ...",
+                hintStyle: fadedTextStyle.copyWith(
+                  fontSize: 16,
+                  color: themeIsDark
+                      ? Colors.white38
+                      : fadedTextStyle.color.withOpacity(0.5),
+                ),
+                border: InputBorder.none,
+              ),
+              onChanged: (string) {
+                setState(() {
+                  searchResult = string;
+                });
+              },
+            ),
+          ),
+          searchResult != ""
+              ? InkWell(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                    child: FaIcon(
+                      FontAwesomeIcons.times,
+                      size: 18,
+                      color: themeIsDark ? Colors.white54 : Colors.black54,
+                    ),
+                  ),
+                  onTap: () {
+                    changeSearching();
+                  },
+                )
+              : Container(),
+        ],
+      ),
+    );
+  }
+
   Widget shimmerEffect() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Card(
+      child: Container(
         margin: const EdgeInsets.symmetric(vertical: 15),
-        elevation: 5,
-        color: themeIsDark ? Color(0xFF3C4043) : Color(0xFFF1F3F4),
-        shadowColor: Colors.black,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
+        decoration: BoxDecoration(
+          color: themeIsDark ? Color(0xFF2d3033) : Color(0xFFF1F3F4),
+          borderRadius: BorderRadius.all(Radius.circular(15)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              offset: Offset(0, 1),
+              blurRadius: 1.0,
+            ),
+          ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.only(bottom: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Shimmer.fromColors(
-                baseColor: Colors.black38,
-                highlightColor: Colors.black12,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  child: Container(
-                    height: 70,
-                    color: Colors.white,
+              Stack(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Shimmer.fromColors(
+                      baseColor: Colors.black38,
+                      highlightColor: Colors.black12,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(15),
+                          topRight: Radius.circular(15),
+                        ),
+                        child: Container(
+                          height: 125,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                  Container(
+                    height: 125,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Container(
+                          padding: const EdgeInsets.all(2),
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: themeIsDark
+                                ? Color(0xFF2d3033)
+                                : Color(0xFFF1F3F4),
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black26,
+                                offset: Offset(0, 2),
+                                blurRadius: 3.0,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 8, left: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Shimmer.fromColors(
                   baseColor: Colors.black38,
                   highlightColor: Colors.black12,
@@ -251,7 +377,7 @@ class _HomePageState extends State<HomePage> {
                                 child: Row(
                                   children: <Widget>[
                                     Icon(
-                                      FontAwesomeIcons.locationArrow,
+                                      FontAwesomeIcons.solidCompass,
                                       size: eventLocationTextStyle.fontSize,
                                       color: themeIsDark
                                           ? Color(0xFF212226)
@@ -260,7 +386,7 @@ class _HomePageState extends State<HomePage> {
                                     SizedBox(width: 5),
                                     Container(
                                         width: 150,
-                                        height: 15,
+                                        height: 20,
                                         color: Colors.white),
                                   ],
                                 ),
@@ -269,10 +395,25 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
                       ),
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                            width: 50, height: 25, color: Colors.white),
+                      Row(
+                        children: <Widget>[
+                          IconButton(
+                            enableFeedback: false,
+                            icon: FaIcon(
+                              FontAwesomeIcons.shareAlt,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {},
+                          ),
+                          IconButton(
+                            enableFeedback: false,
+                            icon: FaIcon(
+                              FontAwesomeIcons.calendarAlt,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {},
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -299,6 +440,7 @@ class _HomePageState extends State<HomePage> {
         }
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: themeIsDark ? Color(0xFF212226) : Colors.white,
         body: ChangeNotifierProvider<AppState>(
           create: (_) => AppState(),
@@ -308,17 +450,16 @@ class _HomePageState extends State<HomePage> {
                 Stack(
                   children: <Widget>[
                     Container(
-                      height: MediaQuery.of(context).size.height * 0.5,
+                      height: MediaQuery.of(context).size.height * 0.45,
                       decoration: BoxDecoration(
-                        color: themeIsDark ? Colors.white10 : Colors.black12,
+                        color: themeIsDark ? Colors.white10 : Colors.grey[200],
                         borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(30),
                             bottomRight: Radius.circular(30)),
                       ),
                     ),
                     Container(
-                      // color: Color(0xFF202124),
-                      height: MediaQuery.of(context).size.height * 0.5,
+                      height: MediaQuery.of(context).size.height * 0.45,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         image: DecorationImage(
@@ -334,14 +475,26 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 16),
+                        padding: const EdgeInsets.only(
+                          top: 16.0,
+                          left: 16.0,
+                          right: 8.0,
+                          bottom: 16.0,
+                        ),
                         child: Row(
                           children: <Widget>[
                             Text(
                               "QTáRolando?",
                               style: whiteHeadingTextStyle.copyWith(
-                                  color: appState.colorPrimary, fontSize: 35),
+                                  foreground: Paint()
+                                    ..shader = LinearGradient(
+                                      colors: <Color>[
+                                        appState.colorPrimary,
+                                        appState.colorSecundary,
+                                      ],
+                                    ).createShader(
+                                        Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
+                                  fontSize: 35),
                             ),
                             Spacer(),
                             IconButton(
@@ -350,8 +503,8 @@ class _HomePageState extends State<HomePage> {
                                     ? FontAwesomeIcons.sun
                                     : FontAwesomeIcons.moon,
                                 color: themeIsDark
-                                    ? Colors.white
-                                    : Color(0xFF212226),
+                                    ? Colors.white70
+                                    : Color(0xFF212226).withOpacity(0.7),
                               ),
                               onPressed: () => _setThemeForSharedPref(),
                             )
@@ -360,100 +513,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: AnimatedContainer(
-                          duration: Duration(milliseconds: 100),
-                          height: 50,
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          decoration: BoxDecoration(
-                              color: (focusInput.hasFocus || searchResult != "")
-                                  ? themeIsDark
-                                      ? Color(0xFF474C4F)
-                                      : Colors.white
-                                  : themeIsDark
-                                      ? Color(0xFF212226)
-                                      : Colors.white,
-                              borderRadius: BorderRadius.circular(50),
-                              boxShadow:
-                                  (focusInput.hasFocus || searchResult != "")
-                                      ? [
-                                          BoxShadow(
-                                            color: Colors.black26,
-                                            offset: Offset(0, 1),
-                                            blurRadius: 3.0,
-                                          ),
-                                        ]
-                                      : []),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Expanded(
-                                child: TextField(
-                                  enabled: hasInternet ? true : false,
-                                  textAlignVertical: TextAlignVertical.top,
-                                  focusNode: focusInput,
-                                  controller: searchTextController,
-                                  maxLines: 1,
-                                  cursorColor:
-                                      themeData.textSelectionHandleColor,
-                                  style: fadedTextStyle.copyWith(
-                                    fontSize: 16,
-                                    color: themeIsDark
-                                        ? Colors.white
-                                        : fadedTextStyle.color,
-                                  ),
-                                  decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.symmetric(vertical: -5),
-                                    icon: FaIcon(
-                                      hasInternet
-                                          ? FontAwesomeIcons.search
-                                          : FontAwesomeIcons.lock,
-                                      color: (focusInput.hasFocus ||
-                                              searchResult != "")
-                                          ? themeIsDark
-                                              ? Colors.white
-                                              : fadedTextStyle.color
-                                          : themeIsDark
-                                              ? Colors.white38
-                                              : fadedTextStyle.color
-                                                  .withOpacity(0.7),
-                                    ),
-                                    hintText: "Pesquisar ...",
-                                    hintStyle: fadedTextStyle.copyWith(
-                                      fontSize: 16,
-                                      color: themeIsDark
-                                          ? Colors.white38
-                                          : fadedTextStyle.color
-                                              .withOpacity(0.5),
-                                    ),
-                                    border: InputBorder.none,
-                                  ),
-                                  onChanged: (string) {
-                                    setState(() {
-                                      searchResult = string;
-                                    });
-                                  },
-                                ),
-                              ),
-                              searchResult != ""
-                                  ? InkWell(
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 5, vertical: 5),
-                                        child: FaIcon(
-                                          FontAwesomeIcons.times,
-                                          size: 18,
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        changeSearching();
-                                      },
-                                    )
-                                  : Container(),
-                            ],
-                          ),
-                        ),
+                        child: searchBar(),
                       ),
                       Container(
                         decoration: BoxDecoration(
@@ -479,57 +539,149 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       Expanded(
-                        child: hasInternet
-                            ? Consumer<AppState>(
-                                builder: (context, appState, _) =>
-                                    RefreshIndicator(
-                                        backgroundColor: themeIsDark
-                                            ? Color(0xFF212226)
-                                            : Colors.white,
-                                        color: fadedTextStyle.color,
-                                        onRefresh: refreshList,
-                                        child: StreamBuilder<List<Evento>>(
-                                          stream: _eventos,
-                                          builder: (context, snapshot) {
-                                            if (!snapshot.hasData)
-                                              return ListView.builder(
-                                                itemCount: 10,
-                                                // Important code
-                                                itemBuilder: (context, index) =>
-                                                    shimmerEffect(),
-                                              );
-                                            return ScrollConfiguration(
-                                              behavior: ScrollBehavior(),
-                                              child: GlowingOverscrollIndicator(
-                                                color: appState.colorPrimary,
-                                                axisDirection:
-                                                    AxisDirection.down,
-                                                child: ListView(
-                                                  physics:
-                                                      AlwaysScrollableScrollPhysics(),
+                          child: Consumer<AppState>(
+                        builder: (context, appState, _) => RefreshIndicator(
+                          backgroundColor:
+                              themeIsDark ? Color(0xFF212226) : Colors.white,
+                          color: fadedTextStyle.color,
+                          onRefresh: refreshList,
+                          child: StreamBuilder<List<Evento>>(
+                            stream: _eventos,
+                            builder: (context, snapshot) {
+                              if (hasInternet && !snapshot.hasData) {
+                                if (!snapshot.hasData)
+                                  return ListView.builder(
+                                    itemCount: 5,
+                                    itemBuilder: (context, index) =>
+                                        shimmerEffect(),
+                                  );
+                              } else if (hasInternet || snapshot.hasData) {
+                                return ScrollConfiguration(
+                                  behavior: ScrollBehavior(),
+                                  child: GlowingOverscrollIndicator(
+                                    color: Color(0xFF2d3033),
+                                    axisDirection: AxisDirection.down,
+                                    child: ListView(
+                                      physics: AlwaysScrollableScrollPhysics(),
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16.0),
+                                          child: Container(
+                                            child: buildListByCategory(
+                                              snapshot.data.toList(),
+                                              appState,
+                                              screenHeight,
+                                              screenWidth,
+                                            ),
+                                          ),
+                                        ),
+                                        !hasInternet
+                                            ? Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal: 16.0,
+                                                  vertical: 15.0,
+                                                ),
+                                                child: Row(
                                                   children: <Widget>[
                                                     Padding(
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: 16.0),
-                                                      child: Container(
-                                                        child:
-                                                            buildListByCategory(
-                                                                snapshot.data
-                                                                    .toList(),
-                                                                appState,
-                                                                screenHeight,
-                                                                screenWidth),
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              right: 8.0),
+                                                      child: Stack(
+                                                        alignment: Alignment
+                                                            .bottomCenter,
+                                                        children: <Widget>[
+                                                          ShaderMask(
+                                                            shaderCallback:
+                                                                (bounds) =>
+                                                                    LinearGradient(
+                                                              colors: [
+                                                                appState
+                                                                    .colorPrimary,
+                                                                appState
+                                                                    .colorSecundary
+                                                              ],
+                                                              tileMode: TileMode
+                                                                  .mirror,
+                                                            ).createShader(
+                                                                        bounds),
+                                                            child: Container(
+                                                              width: 55,
+                                                              height: 55,
+                                                              child: Icon(
+                                                                FontAwesomeIcons
+                                                                    .wifi,
+                                                                size: 40,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Icon(
+                                                            FontAwesomeIcons
+                                                                .slash,
+                                                            size: 45,
+                                                            color: themeIsDark
+                                                                ? Color(
+                                                                    0xFF212226)
+                                                                : Colors.white,
+                                                          ),
+                                                          ShaderMask(
+                                                            shaderCallback:
+                                                                (bounds) =>
+                                                                    LinearGradient(
+                                                              colors: [
+                                                                appState
+                                                                    .colorPrimary,
+                                                                appState
+                                                                    .colorSecundary
+                                                              ],
+                                                              tileMode: TileMode
+                                                                  .mirror,
+                                                            ).createShader(
+                                                                        bounds),
+                                                            child: Container(
+                                                              width: 60,
+                                                              height: 60,
+                                                              child: Icon(
+                                                                FontAwesomeIcons
+                                                                    .slash,
+                                                                size: 40,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Flexible(
+                                                      child: Text(
+                                                        "Não há conexão com a Internet. Ative o Wi-Fi ou dados e tente novamente.",
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: fadedTextStyle
+                                                            .copyWith(
+                                                          fontSize: 16,
+                                                          color: themeIsDark
+                                                              ? Colors.white38
+                                                              : fadedTextStyle
+                                                                  .color,
+                                                        ),
                                                       ),
                                                     ),
                                                   ],
                                                 ),
-                                              ),
-                                            );
-                                          },
-                                        )),
-                              )
-                            : Center(
+                                              )
+                                            : Row(),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }
+                              return Center(
                                 child: Container(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -537,10 +689,24 @@ class _HomePageState extends State<HomePage> {
                                       Stack(
                                         alignment: Alignment.bottomCenter,
                                         children: <Widget>[
-                                          Icon(
-                                            FontAwesomeIcons.wifi,
-                                            size: 40,
-                                            color: appState.colorPrimary,
+                                          ShaderMask(
+                                            shaderCallback: (bounds) =>
+                                                LinearGradient(
+                                              colors: [
+                                                appState.colorPrimary,
+                                                appState.colorSecundary
+                                              ],
+                                              tileMode: TileMode.mirror,
+                                            ).createShader(bounds),
+                                            child: Container(
+                                              width: 55,
+                                              height: 55,
+                                              child: Icon(
+                                                FontAwesomeIcons.wifi,
+                                                size: 40,
+                                                color: Colors.white,
+                                              ),
+                                            ),
                                           ),
                                           Icon(
                                             FontAwesomeIcons.slash,
@@ -549,10 +715,24 @@ class _HomePageState extends State<HomePage> {
                                                 ? Color(0xFF212226)
                                                 : Colors.white,
                                           ),
-                                          Icon(
-                                            FontAwesomeIcons.slash,
-                                            size: 40,
-                                            color: appState.colorPrimary,
+                                          ShaderMask(
+                                            shaderCallback: (bounds) =>
+                                                LinearGradient(
+                                              colors: [
+                                                appState.colorPrimary,
+                                                appState.colorSecundary
+                                              ],
+                                              tileMode: TileMode.mirror,
+                                            ).createShader(bounds),
+                                            child: Container(
+                                              width: 60,
+                                              height: 60,
+                                              child: Icon(
+                                                FontAwesomeIcons.slash,
+                                                size: 40,
+                                                color: Colors.white,
+                                              ),
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -560,23 +740,34 @@ class _HomePageState extends State<HomePage> {
                                         height: 10,
                                       ),
                                       Text(
-                                        "Internet indisponível!",
+                                        "Não há conexão com a Internet.",
                                         style: fadedTextStyle.copyWith(
-                                            fontSize: 18),
+                                          fontSize: 16,
+                                          color: themeIsDark
+                                              ? Colors.white38
+                                              : fadedTextStyle.color,
+                                        ),
                                       ),
                                       Text(
-                                        "Tente novamente.",
+                                        "Ative o Wi-Fi ou dados e tente novamente.",
                                         style: fadedTextStyle.copyWith(
-                                            fontSize: 18),
+                                          fontSize: 16,
+                                          color: themeIsDark
+                                              ? Colors.white38
+                                              : fadedTextStyle.color,
+                                        ),
                                       ),
                                     ],
                                   ),
                                 ),
-                              ),
-                      ),
+                              );
+                            },
+                          ),
+                        ),
+                      )),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),

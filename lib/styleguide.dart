@@ -1,43 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-final lightTheme = ThemeData(
-  scaffoldBackgroundColor: Color(0xFFFFFFFF),
-  primaryColor: Color(0xFFF4F4F4),
-  visualDensity: VisualDensity.adaptivePlatformDensity,
-  textSelectionColor: Colors.black45,
-  textTheme: TextTheme(
-    headline1: GoogleFonts.montserrat(
-        fontSize: 35, fontWeight: FontWeight.bold, color: Color(0xFFFFFFFF)),
-  ),
-);
-
-final darkTheme = ThemeData(
-  scaffoldBackgroundColor: Color(0xFF212226),
-  primaryColor: Color(0xFF212226),
-  visualDensity: VisualDensity.adaptivePlatformDensity,
-  textSelectionColor: Colors.black45,
-  textTheme: TextTheme(
-    headline1: GoogleFonts.montserrat(
-        fontSize: 35, fontWeight: FontWeight.bold, color: Color(0xFFFFFFFF)),
-  ),
-);
-
-final TextStyle fadedTextStyle = GoogleFonts.sourceSansPro(
+final TextStyle fadedTextStyle = TextStyle(
   fontSize: 14,
-  fontWeight: FontWeight.w600,
+  fontFamily: "Caros",
+  fontWeight: FontWeight.normal,
   color: Color(0xFF444444),
 );
 
-final TextStyle whiteHeadingTextStyle = GoogleFonts.montserrat(
+final TextStyle whiteHeadingTextStyle = TextStyle(
   fontSize: 40,
+  fontFamily: "Caros",
   fontWeight: FontWeight.bold,
   color: Color(0xFFFFFFFF),
 );
 
-final TextStyle categoryTextStyle = GoogleFonts.sourceSansPro(
-  fontSize: 13,
-  fontWeight: FontWeight.bold,
+final TextStyle categoryTextStyle = TextStyle(
+  fontSize: 14,
+  fontFamily: "Caros",
+  fontWeight: FontWeight.w600,
   color: Color(0xFFFFFFFF),
 );
 
@@ -45,33 +25,40 @@ final TextStyle selectedCategoryTextStyle = categoryTextStyle.copyWith(
   color: Color(0xFF13A8AE),
 );
 
-final TextStyle eventTitleTextStyle = GoogleFonts.sourceSansPro(
+final TextStyle eventTitleTextStyle = TextStyle(
   fontSize: 24,
+  fontFamily: "Caros",
   fontWeight: FontWeight.bold,
   color: Colors.white,
 );
 
-final TextStyle eventwhiteTitleTextStyle = GoogleFonts.sourceSansPro(
+final TextStyle eventwhiteTitleTextStyle = TextStyle(
   fontSize: 40,
+  fontFamily: "Caros",
   fontWeight: FontWeight.bold,
   color: Color(0xFFFFFFFF),
-  shadows: [
-    Shadow(
-      color: Colors.blue.shade900.withOpacity(.5),
-      offset: Offset(0, 1),
-      blurRadius: .5,
-    ),
-  ],
 );
 
-final TextStyle eventLocationTextStyle = GoogleFonts.sourceSansPro(
-  fontSize: 18,
-  fontWeight: FontWeight.w800,
-  color: Color(0xFF444444),
+final TextStyle eventLocationTextStyle = TextStyle(
+  fontSize: 16,
+  fontFamily: "Caros",
+  color: Colors.white,
+  fontWeight: FontWeight.w500,
 );
 
-final TextStyle punchLine1TextStyle = GoogleFonts.montserrat(
+final TextStyle eventoDescription = TextStyle(
+  fontSize: 17,
+  fontFamily: "Caros",
+  fontWeight: FontWeight.w500,
+);
+
+final TextStyle eventoSubtitle = TextStyle(
+  fontFamily: "Caros",
+);
+
+final TextStyle punchLine1TextStyle = TextStyle(
   fontSize: 21,
+  fontFamily: "Caros",
   fontWeight: FontWeight.w800,
   color: Color(0xFF13A8AE),
 );
