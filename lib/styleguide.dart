@@ -1,5 +1,77 @@
 import 'package:flutter/material.dart';
 
+ThemeData darkTheme = ThemeData(
+    primaryColor: Color(0xFF212226),
+    accentColor: Colors.white10,
+    buttonColor: Colors.white,
+    fontFamily: "Caros",
+    textSelectionHandleColor: Colors.white,
+    textSelectionColor: Colors.white.withOpacity(0.5),
+    textTheme: TextTheme(
+      headline1: TextStyle(
+        fontSize: 14,
+        fontFamily: "Caros",
+        fontWeight: FontWeight.w600,
+        color: Colors.white70,
+      ),
+      headline2: TextStyle(
+        fontSize: 24,
+        fontFamily: "Caros",
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      ),
+      headline3: TextStyle(
+        fontSize: 14,
+        fontFamily: "Caros",
+        color: Colors.white,
+        fontWeight: FontWeight.w500,
+      ),
+      headline4: TextStyle(
+        fontSize: 16,
+        fontFamily: "Caros",
+        color: Colors.white,
+        fontWeight: FontWeight.w500,
+      ),
+    ),
+    appBarTheme: AppBarTheme(color: Color(0xff1f655d)));
+
+ThemeData lightTheme = ThemeData(
+    primaryColor: Colors.white,
+    accentColor: Colors.grey[300],
+    buttonColor: Color(0xFF212226),
+    fontFamily: "Caros",
+    textSelectionHandleColor: Color(0xFF444444),
+    textSelectionColor: Color(0xFF212226).withOpacity(0.5),
+    textTheme: TextTheme(
+      headline1: TextStyle(
+        fontSize: 14,
+        fontFamily: "Caros",
+        fontWeight: FontWeight.w600,
+        color: Color(0xFF444444),
+      ),
+      headline2: TextStyle(
+        fontSize: 24,
+        fontFamily: "Caros",
+        fontWeight: FontWeight.bold,
+        color: Color(0xFF212226),
+      ),
+      headline3: TextStyle(
+        fontSize: 14,
+        fontFamily: "Caros",
+        color: Color(0xFF212226),
+        fontWeight: FontWeight.w500,
+      ),
+      headline4: TextStyle(
+        fontSize: 16,
+        fontFamily: "Caros",
+        color: Color(0xFF212226),
+        fontWeight: FontWeight.w500,
+      ),
+    ),
+    appBarTheme: AppBarTheme(
+        color: Color(0xff1f655d),
+        actionsIconTheme: IconThemeData(color: Colors.white)));
+
 final TextStyle fadedTextStyle = TextStyle(
   fontSize: 14,
   fontFamily: "Caros",
