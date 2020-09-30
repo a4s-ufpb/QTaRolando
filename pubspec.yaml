@@ -44,11 +44,19 @@ dependencies:
   shared_preferences: ^0.5.7+3
   splashscreen: ^1.2.0
   flutter_launcher_icons: ^0.7.5
+  flutter_automation: ^1.3.3
   shimmer: ^1.1.1
   readmore: ^1.0.0
   add_2_calendar: ^1.4.0
   intl: ^0.16.1
   flutter_map: ^0.10.1
+  adaptive_theme: ^1.0.0
+  map_launcher: ^0.12.0
+  speech_to_text: ^2.5.0
+  avatar_glow: ^1.2.0
+  flutter_staggered_animations: ^0.1.2
+  collection: ^1.14.12
+  fading_edge_scrollview: ^1.1.4
 
 flutter_icons:
   android: "qtarolando_icon"
