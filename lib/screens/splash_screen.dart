@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:local_events/screens/homepage/homepage.dart';
 import 'package:local_events/styleguide.dart';
-import 'package:local_events/ui/homepage/homepage.dart';
 import 'package:splashscreen/splashscreen.dart';
 
 class SplashScreenWidget extends StatefulWidget {
-  Color backgroundColor;
-  SplashScreenWidget({Key key, this.backgroundColor}) : super(key: key);
+  bool themeIsDark;
+  SplashScreenWidget({Key key, this.themeIsDark}) : super(key: key);
 
   @override
   _SplashScrenWidgetState createState() => _SplashScrenWidgetState();
@@ -20,21 +20,21 @@ class _SplashScrenWidgetState extends State<SplashScreenWidget> {
         children: <Widget>[
           SplashScreen(
             seconds: 2,
-            backgroundColor: widget.backgroundColor,
-            navigateAfterSeconds: HomePage(),
+            backgroundColor: Theme.of(context).primaryColor,
+            navigateAfterSeconds: HomePage(themeIsDark: widget.themeIsDark),
             loaderColor: Colors.transparent,
           ),
           Center(
             child: Container(
-              height: 104,
+              height: 100,
               width: 100,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: [
                   BoxShadow(
-                      color: Colors.black26,
+                      color: Colors.black12,
                       offset: Offset(0, 2),
-                      blurRadius: 3)
+                      blurRadius: 2)
                 ],
                 image: DecorationImage(
                   image: AssetImage("assets/icons/app_icon.png"),
@@ -55,7 +55,7 @@ class _SplashScrenWidgetState extends State<SplashScreenWidget> {
                       "from",
                       style: fadedTextStyle.copyWith(
                         fontSize: 20,
-                        color: Colors.grey[300],
+                        color: Colors.grey[400],
                       ),
                     ),
                   ),

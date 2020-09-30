@@ -44,7 +44,7 @@ final socialCategory = Category(
 final congressoCategory = Category(
   categoryId: 3,
   name: "Congressos",
-  icon: FontAwesomeIcons.microphone,
+  icon: FontAwesomeIcons.solidCommentDots,
   colorPrimary: Color(0xFF5B247A),
   colorSecundary: Color(0xFF1BCEDF),
 );
