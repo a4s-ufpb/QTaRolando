@@ -2,6 +2,31 @@
 
 Este é um app desenvolvido, em Flutter e Dart, para o projeto de Extensão Apps4Society do Campus IV - UFPB, em Rio Tinto, cujo o objetivo é oferecer, de forma simples e fácil, tanto a visualização quanto as informações de eventos, inicialmente com o foco aos relacionados a UFPB, no estado da Paraíba.
 
+#### QTáRolando? Screenshots
+
+<table>
+  <tr>
+    <td>Homepage</td>
+    <td>Search</td>
+    <td>Filter</td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/Homepage-Light.png" width=270 height=540></td>
+    <td><img src="screenshots/Search.png" width=270 height=540></td>
+    <td><img src="screenshots/Filter.png" width=270 height=540></td>
+  </tr>
+  <tr>
+    <td>Share</td>
+    <td>Event Details</td>
+    <td>Dark Theme</td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/Share.png" width=270 height=540></td>
+    <td><img src="screenshots/Event-Details.png" width=270 height=540></td>
+    <td><img src="screenshots/HomePage-Dark.png" width=270 height=540></td>
+  </tr>
+ </table>
+
 ## Pré Requisitos
 ### Flutter v1.17.5 ou superior
 Como iniciar com o Flutter: https://flutter.dev/docs/get-started/install
