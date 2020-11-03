@@ -20,7 +20,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
         appState.selectedCategoryId == widget.category.categoryId;
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
         border: Border.all(
@@ -29,6 +29,12 @@ class _CategoryWidgetState extends State<CategoryWidget> {
               : Theme.of(context).buttonColor,
           width: 1,
         ),
+        boxShadow: (isSelected)
+            ? [
+                BoxShadow(
+                    blurRadius: 3, offset: Offset(0, 1), color: Colors.black26)
+              ]
+            : [],
         borderRadius: BorderRadius.all(Radius.circular(50)),
         gradient: LinearGradient(
           colors: isSelected
