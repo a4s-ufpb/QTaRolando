@@ -362,7 +362,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                                     ),
                                     Spacer(),
                                     InkWell(
-                                      onTap: () => openMap(evento),
+                                      onTap: () => launchMapsUrl(evento),
                                       child: Row(
                                         children: <Widget>[
                                           Text(
