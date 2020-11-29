@@ -54,8 +54,16 @@ Após baixar/clonar o projeto abra a pasta do projeto em seu ambiente de desenvo
 ```{sh}
 flutter pub get
 ```
-### Após o comando terminar, como um dispositivo conectado ou emulador aberto, execute o seguinte comando:
+#### Observação
+Antes de iniciar o aplicativo, certifique-se de ter colocado o endereço do Hasura GraphQL Endpoint no arquivo app_module, que está localizado na pasta: lib/app/app_module.dart.
+Dentro do arquivo, procure o trecho de código:
+```{sh}
+Dependency((i) => HasuraConnect("address of your Hasura GraphQL Endpoint"))
+```
+Coloque o endereço entre aspas, e pronto!
+
+### Com um dispositivo conectado ou emulador aberto, execute o seguinte comando:
 ```{sh}
 flutter run
 ```
-Pronto o projeto já estará executando, e pronto para o desenvolvimento.
+Pronto o projeto já estará executando, let's code!.
