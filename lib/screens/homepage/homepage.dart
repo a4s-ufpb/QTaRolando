@@ -281,6 +281,16 @@ class _HomePageState extends State<HomePage> {
                                 height: 50,
                                 width: 50,
                                 decoration: BoxDecoration(
+                                  boxShadow:
+                                      ((appState.filterByDate.isNotEmpty ||
+                                              appState.filterByType.isNotEmpty))
+                                          ? [
+                                              BoxShadow(
+                                                  blurRadius: 3,
+                                                  offset: Offset(0, 1),
+                                                  color: Colors.black26)
+                                            ]
+                                          : [],
                                   gradient: LinearGradient(
                                       begin: AlignmentDirectional.centerStart,
                                       end: AlignmentDirectional.centerEnd,
@@ -299,7 +309,10 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 child: SvgPicture.asset(
                                   "assets/icons/preferences.svg",
-                                  color: Theme.of(context).buttonColor,
+                                  color: (appState.filterByDate.isNotEmpty ||
+                                          appState.filterByType.isNotEmpty)
+                                      ? Theme.of(context).primaryColor
+                                      : Theme.of(context).buttonColor,
                                 ),
                               ),
                               onTap: () => _buildBottomSheetFilters(appState),
@@ -308,7 +321,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 20.0),
+                        padding: const EdgeInsets.only(top: 12.0),
                         child: FadingEdgeScrollView.fromSingleChildScrollView(
                           child: SingleChildScrollView(
                             controller: _controllerCategories,
@@ -327,7 +340,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 16),
+                      SizedBox(height: 8),
                       Expanded(
                           child: Consumer<AppState>(
                         builder: (context, appState, _) => RefreshIndicator(

@@ -28,7 +28,7 @@ Este é um app desenvolvido, em Flutter e Dart, para o projeto de Extensão Apps
  </table>
 
 ## Pré Requisitos
-### Flutter v1.17.5 ou superior
+### Flutter v1.22.2 ou superior
 Como iniciar com o Flutter: https://flutter.dev/docs/get-started/install
 ### Hasura Engine
 Como iniciar com o Docker: [https://hasura.io/docs/1.0/graphql/manual/getting-started/docker-simple.html#docker-simple](https://hasura.io/docs/1.0/graphql/manual/getting-started/docker-simple.html#docker-simple)
