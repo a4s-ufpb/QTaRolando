@@ -30,7 +30,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.3
   font_awesome_flutter: ^8.8.1
-  flutter_svg: ^0.17.4
+  flutter_svg: ^0.19.1
   share: ^0.6.4+3
   provider: ^3.2.0
   hasura_connect: ^0.0.8
@@ -51,7 +51,6 @@ dependencies:
   intl: ^0.16.1
   flutter_map: ^0.10.1
   adaptive_theme: ^1.0.0
-  map_launcher: ^0.12.0
   speech_to_text: ^2.5.0
   avatar_glow: ^1.2.0
   flutter_staggered_animations: ^0.1.2
