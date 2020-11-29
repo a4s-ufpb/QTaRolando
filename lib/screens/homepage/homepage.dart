@@ -281,7 +281,20 @@ class _HomePageState extends State<HomePage> {
                                 height: 50,
                                 width: 50,
                                 decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColor,
+                                  gradient: LinearGradient(
+                                      begin: AlignmentDirectional.centerStart,
+                                      end: AlignmentDirectional.centerEnd,
+                                      colors: (appState
+                                                  .filterByDate.isNotEmpty ||
+                                              appState.filterByType.isNotEmpty)
+                                          ? [
+                                              appState.colorPrimary,
+                                              appState.colorSecundary
+                                            ]
+                                          : [
+                                              Theme.of(context).primaryColor,
+                                              Theme.of(context).primaryColor
+                                            ]),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: SvgPicture.asset(
