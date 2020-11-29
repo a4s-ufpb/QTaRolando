@@ -2,7 +2,6 @@ import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:local_events/functions/utils_functions.dart';
 import 'package:local_events/models/event.dart';
-import 'package:map_launcher/map_launcher.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -38,14 +37,12 @@ void goToWebsite(Evento evento) async {
   }
 }
 
-void openMap(Evento evento) async {
-  if (await MapLauncher.isMapAvailable(MapType.google)) {
-    await MapLauncher.showMarker(
-      mapType: MapType.google,
-      coords: Coords(
-          getCoodenadas(evento.location)[0], getCoodenadas(evento.location)[1]),
-      title: evento.title,
-      description: evento.description,
-    );
+void launchMapsUrl(Evento evento) async {
+  final coordenadas = getLocation(evento.location);
+  final url = 'https://www.google.com/maps/search/?api=1&query=$coordenadas';
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
   }
 }
