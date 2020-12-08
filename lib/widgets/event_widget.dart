@@ -65,12 +65,20 @@ class EventWidget extends StatelessWidget {
                       topRight: Radius.circular(15),
                     ),
                     child: Container(
-                      color: Colors.grey,
-                      child: Image.network(
-                        evento.imagePath,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            appState.colorPrimary,
+                            appState.colorSecundary,
+                          ],
+                        ),
+                      ),
+                      child: FadeInImage.assetNetwork(
+                        image: evento.imagePath,
                         width: MediaQuery.of(context).size.width,
                         height: 125,
                         fit: BoxFit.cover,
+                        placeholder: 'assets/images/placeholder.png',
                       ),
                     ),
                   ),
@@ -182,7 +190,12 @@ class EventWidget extends StatelessWidget {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 8, left: 16, right: 16),
+                padding: const EdgeInsets.only(
+                  top: 8,
+                  left: 16,
+                  right: 16,
+                  bottom: 8,
+                ),
                 child: Row(
                   children: <Widget>[
                     Expanded(

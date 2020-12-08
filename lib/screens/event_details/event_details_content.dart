@@ -46,6 +46,12 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                     height: screenHeight * 0.5,
                     child: Container(
                       decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            widget.appState.colorPrimary,
+                            widget.appState.colorSecundary,
+                          ],
+                        ),
                         borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(30),
                           bottomRight: Radius.circular(30),
@@ -63,9 +69,12 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                           bottomLeft: Radius.circular(30),
                           bottomRight: Radius.circular(30),
                         ),
-                        child: Image.network(
-                          evento.imagePath,
+                        child: FadeInImage.assetNetwork(
+                          image: evento.imagePath,
+                          width: MediaQuery.of(context).size.width,
+                          height: 125,
                           fit: BoxFit.cover,
+                          placeholder: 'assets/images/placeholder.png',
                         ),
                       ),
                     ),
