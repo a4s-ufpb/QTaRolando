@@ -87,7 +87,10 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                     ? Theme.of(context).textTheme.headline1.copyWith(
                           color: Theme.of(context).primaryColor,
                         )
-                    : Theme.of(context).textTheme.headline1,
+                    : Theme.of(context)
+                        .textTheme
+                        .headline1
+                        .copyWith(color: Theme.of(context).buttonColor),
               )
             ],
           ),

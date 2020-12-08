@@ -84,7 +84,7 @@ class _ShimmerEffectWidgetState extends State<ShimmerEffectWidget> {
               ),
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 child: Shimmer.fromColors(
                   baseColor: Colors.black38,
                   highlightColor: Colors.black12,
