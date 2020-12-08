@@ -43,8 +43,8 @@ final socialCategory = Category(
 
 final congressoCategory = Category(
   categoryId: 3,
-  name: "Congressos",
-  icon: FontAwesomeIcons.solidCommentDots,
+  name: "Congressos & Simpósios",
+  icon: FontAwesomeIcons.solidComments,
   colorPrimary: Color(0xFF5B247A),
   colorSecundary: Color(0xFF1BCEDF),
 );
@@ -65,21 +65,21 @@ final palestrasCategory = Category(
   colorSecundary: Color(0xFF3BB2B8),
 );
 
-final simposiosCategory = Category(
-  categoryId: 6,
-  name: "Simpósios",
-  icon: FontAwesomeIcons.solidComments,
-  colorPrimary: Color(0xFF184E68),
-  colorSecundary: Color(0xFF57CA85),
-);
+// final simposiosCategory = Category(
+//   categoryId: 6,
+//   name: "Simpósios",
+//   icon: FontAwesomeIcons.solidComments,
+//   colorPrimary: Color(0xFF184E68),
+//   colorSecundary: Color(0xFF57CA85),
+// );
 
-final tecnologiaCategory = Category(
-  categoryId: 7,
-  name: "Tecnologia",
-  icon: FontAwesomeIcons.microchip,
-  colorPrimary: Color(0xFF17EAD9),
-  colorSecundary: Color(0xFF6078EA),
-);
+// final tecnologiaCategory = Category(
+//   categoryId: 7,
+//   name: "Tecnologia",
+//   icon: FontAwesomeIcons.microchip,
+//   colorPrimary: Color(0xFF17EAD9),
+//   colorSecundary: Color(0xFF6078EA),
+// );
 
 final categories = [
   tudoCategory,
@@ -88,6 +88,6 @@ final categories = [
   congressoCategory,
   cursosCategory,
   palestrasCategory,
-  simposiosCategory,
-  tecnologiaCategory,
+  // simposiosCategory,
+  // tecnologiaCategory,
 ];
