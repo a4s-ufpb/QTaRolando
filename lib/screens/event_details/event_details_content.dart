@@ -1,8 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:latlong/latlong.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:local_events/app_state.dart';
@@ -406,9 +406,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                                 height: 250,
                                 child: FlutterMap(
                                   options: new MapOptions(
-                                    center: new LatLng(
-                                        getCoodenadas(evento.location)[0],
-                                        getCoodenadas(evento.location)[1]),
+                                    center: LatLng(getCoodenadas(evento.location)[0], getCoodenadas(evento.location)[1]),
                                     zoom: 15.0,
                                     maxZoom: 17.0,
                                   ),
@@ -422,10 +420,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                                         new Marker(
                                           width: 80.0,
                                           height: 80.0,
-                                          point: new LatLng(
-                                              getCoodenadas(evento.location)[0],
-                                              getCoodenadas(
-                                                  evento.location)[1]),
+                                          point: LatLng(getCoodenadas(evento.location)[0], getCoodenadas(evento.location)[1]),
                                           builder: (ctx) => new Container(
                                             decoration: BoxDecoration(
                                                 color: widget
