@@ -28,14 +28,8 @@ Este é um app desenvolvido, em Flutter e Dart, para o projeto de Extensão Apps
  </table>
 
 ## Pré Requisitos
-### Flutter v1.22.2 ou superior
+### Flutter v2.10.1 ou superior
 Como iniciar com o Flutter: https://flutter.dev/docs/get-started/install
-### Hasura Engine
-Como iniciar com o Docker: [https://hasura.io/docs/1.0/graphql/manual/getting-started/docker-simple.html#docker-simple](https://hasura.io/docs/1.0/graphql/manual/getting-started/docker-simple.html#docker-simple)
-
-Como iniciar com o Heroku: [https://hasura.io/docs/cloud/1.0/manual/getting-started/index.html](https://hasura.io/docs/cloud/1.0/manual/getting-started/index.html)
-
-O **Hasura**, em seu arquivo docker-compose, ao se iniciar com o Docker, exige o **PostgreSQL** em sua versão 12 e utiliza uma imagem do **GraphQL**, do próprio Hasura, em sua versão 1.3.0.
 
 ### Plugins/Extensões
 Embora os plugins, que serão listados abaixo, não sejam necessários para a execução do projeto, auxiliam muito na produtividade durante o desenvolvimento do mesmo.
@@ -55,12 +49,12 @@ Após baixar/clonar o projeto abra a pasta do projeto em seu ambiente de desenvo
 flutter pub get
 ```
 #### Observação
-Antes de iniciar o aplicativo, certifique-se de ter colocado o endereço do Hasura GraphQL Endpoint no arquivo app_module, que está localizado na pasta: lib/app/app_module.dart.
+Antes de iniciar o aplicativo, certifique-se de ter colocado o endereço da API QTAROLANDO-API no arquivo app_repository, que está localizado na pasta: lib/app/app_repository.dart
 Dentro do arquivo, procure o trecho de código:
 ```{sh}
-Dependency((i) => HasuraConnect("address of your Hasura GraphQL Endpoint"))
+var response = await dio.get("{QTAROLANDO-API URL}/api/events");
 ```
-Coloque o endereço entre aspas, e pronto!
+Substitua {QTAROLANDO-API URL} pelo endereço da API QTAROLANDO-API, e pronto!
 
 ### Com um dispositivo conectado ou emulador aberto, execute o seguinte comando:
 ```{sh}
