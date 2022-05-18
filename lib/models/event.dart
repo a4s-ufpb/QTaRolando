@@ -1,59 +1,58 @@
 class Evento {
-  final String imagePath,
-      title,
-      description,
-      location,
-      initialDate,
-      finalDate,
-      site,
-      punchLine1,
-      punchLine2,
-      phone;
+  final int id;
+  final String title;
+  final String subtitle;
+  final int categoryId;
+  final String description;
+  final DateTime initialDate;
+  final DateTime finalDate;
+  final String imagePath;
+  final String location;
+  final String phone;
+  final String site;
   final List categoryIds, galleryImages;
 
-  Evento({
-    this.imagePath,
-    this.title,
-    this.description,
-    this.location,
-    this.initialDate,
-    this.finalDate,
-    this.site,
-    this.punchLine1,
-    this.punchLine2,
-    this.phone,
-    this.categoryIds,
-    this.galleryImages,
-  });
+  Evento(
+      {this.id,
+      this.title,
+      this.subtitle,
+      this.categoryId,
+      this.description,
+      this.initialDate,
+      this.finalDate,
+      this.imagePath,
+      this.location,
+      this.phone,
+      this.site,
+      this.categoryIds,
+      this.galleryImages});
 
   factory Evento.fromJson(Map<String, dynamic> json) {
     return Evento(
+      title: json["title"] as String,
+      subtitle: json["subtitle"] as String,
       categoryIds: [0, json["categoryId"]],
       description: json["description"] as String,
-      initialDate: json["initialDate"] as String,
-      finalDate: json["finalDate"] as String,
+      initialDate: DateTime.parse(json["initialDate"]),
+      finalDate: DateTime.parse(json["finalDate"]),
       imagePath: json["imagePath"] as String,
       location: json["location"] as String,
-      punchLine1: json["punchLine1"] as String,
-      punchLine2: json["punchLine2"] as String,
-      title: json["title"] as String,
-      site: json["site"] as String,
       phone: json["phone"] as String,
+      site: json["site"] as String,
     );
   }
 
   Map<String, dynamic> toJson() => {
+        "title": title,
+        "subtitle": subtitle,
         "categoryId": categoryIds[1] as int,
         "description": description,
         "initialDate": initialDate,
         "finalDate": finalDate,
         "imagePath": imagePath,
         "location": location,
-        "punchLine1": punchLine1,
-        "punchLine2": punchLine2,
-        "title": title,
-        "site": site,
         "phone": phone,
+        "site": site,
       };
 
   static List<Evento> fromJsonList(List list) {

@@ -8,6 +8,8 @@ import 'package:local_events/functions/utils_functions.dart';
 import 'package:local_events/models/event.dart';
 import 'package:local_events/screens/event_details/event_details_page.dart';
 
+import '../themes/app_images.dart';
+
 class EventWidget extends StatelessWidget {
   final Evento evento;
   final AppState appState;
@@ -78,7 +80,7 @@ class EventWidget extends StatelessWidget {
                         width: MediaQuery.of(context).size.width,
                         height: 125,
                         fit: BoxFit.cover,
-                        placeholder: 'assets/images/placeholder.png',
+                        placeholder: AppImages.placeholder,
                       ),
                     ),
                   ),
@@ -90,8 +92,7 @@ class EventWidget extends StatelessWidget {
                         alignment: Alignment.topLeft,
                         child: Stack(
                           children: <Widget>[
-                            if (DateTime.parse(evento.initialDate).year !=
-                                DateTime.now().year)
+                            if (evento.initialDate.year != DateTime.now().year)
                               Container(
                                 width: 76,
                                 height: 55,
@@ -121,8 +122,7 @@ class EventWidget extends StatelessWidget {
                                     quarterTurns: 1,
                                     child: RichText(
                                       text: TextSpan(
-                                        text:
-                                            "${DateTime.parse(evento.initialDate).year}",
+                                        text: "${evento.initialDate.year}",
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline2
@@ -158,8 +158,8 @@ class EventWidget extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
                                   Text(
-                                    DateFormat("dd", "pt_BR").format(
-                                        DateTime.parse(evento.initialDate)),
+                                    DateFormat("dd", "pt_BR")
+                                        .format(evento.initialDate),
                                     style: Theme.of(context)
                                         .textTheme
                                         .headline2
@@ -169,8 +169,8 @@ class EventWidget extends StatelessWidget {
                                         ),
                                   ),
                                   Text(
-                                    capitalize(DateFormat.MMM("pt_BR").format(
-                                        DateTime.parse(evento.initialDate))),
+                                    capitalize(DateFormat.MMM("pt_BR")
+                                        .format(evento.initialDate)),
                                     style: Theme.of(context)
                                         .textTheme
                                         .headline2

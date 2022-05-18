@@ -1,4 +1,4 @@
-package com.example.local_events
+package com.ufpb.apps4society.qtarolando
 
 import io.flutter.embedding.android.FlutterActivity
 

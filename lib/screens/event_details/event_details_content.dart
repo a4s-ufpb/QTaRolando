@@ -148,7 +148,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                               padding:
                                   const EdgeInsets.only(left: 16.0, bottom: 8),
                               child: Text(
-                                "${evento.punchLine1} ${evento.punchLine2}",
+                                "${evento.subtitle}",
                                 style: eventoDescription.copyWith(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w500,
@@ -187,8 +187,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                                         child: Center(
                                           child: Text(
                                             DateFormat("dd", "pt_BR").format(
-                                                DateTime.parse(
-                                                    evento.initialDate)),
+                                                    evento.initialDate),
                                             style: eventoSubtitle.copyWith(
                                               fontSize: 25,
                                               fontWeight: FontWeight.w500,
@@ -217,8 +216,8 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                                               capitalize(DateFormat(
                                                       "E, dd MMM, yyyy",
                                                       "pt_BR")
-                                                  .format(DateTime.parse(
-                                                      evento.initialDate))),
+                                                  .format(
+                                                      evento.initialDate)),
                                               style: eventLocationTextStyle
                                                   .copyWith(
                                                 fontSize: 22,
@@ -246,8 +245,8 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                                               Text(
                                                 DateFormat(
                                                         "dd MMM, yyy", "pt_BR")
-                                                    .format(DateTime.parse(
-                                                        evento.finalDate)),
+                                                    .format(
+                                                        evento.finalDate),
                                                 style: eventoSubtitle.copyWith(
                                                   fontWeight: FontWeight.w400,
                                                   color: widget.themeIsDark

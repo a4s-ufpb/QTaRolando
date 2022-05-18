@@ -306,7 +306,7 @@ class _HomePageState extends State<HomePage> {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: SvgPicture.asset(
-                                  "assets/icons/preferences.svg",
+                                  "assets/icons/filter_alt_black_24dp.svg",
                                   color: (appState.filterByDate.isNotEmpty ||
                                           appState.filterByType.isNotEmpty)
                                       ? Theme.of(context).primaryColor
