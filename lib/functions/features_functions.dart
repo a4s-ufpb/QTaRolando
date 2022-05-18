@@ -8,7 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 void share(BuildContext context, Evento evento) {
   final RenderBox box = context.findRenderObject();
   final String text =
-      "${evento.title} - ${evento.punchLine1} ${evento.punchLine2}\nPara mais informações acesse: ${evento.site}";
+      "${evento.title} - ${evento.subtitle}\nPara mais informações acesse: ${evento.site}";
   Share.share(
     text,
     subject: evento.description,
@@ -21,8 +21,8 @@ void addEventToCalendar(Evento evento) {
     title: evento.title,
     description: evento.description,
     location: getLocation(evento.location),
-    startDate: DateTime.parse(evento.initialDate),
-    endDate: DateTime.parse(evento.finalDate),
+    startDate: evento.initialDate,
+    endDate: evento.finalDate,
   );
   Add2Calendar.addEvent2Cal(event);
 }

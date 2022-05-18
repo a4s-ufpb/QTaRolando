@@ -40,6 +40,7 @@ class _ListEventsWidgetState extends State<ListEventsWidget> {
     List<EventWidget> list = new List<EventWidget>();
     List<EventWidget> filtredListByCategory = new List<EventWidget>();
     List<EventWidget> filterByFilters = new List<EventWidget>();
+
     if (searchResult != "") {
       for (Evento evento in lista) {
         if (evento.title.toLowerCase().contains(searchResult.toLowerCase()) &&

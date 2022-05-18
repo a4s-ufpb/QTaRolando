@@ -12,7 +12,7 @@ class Services {
     try {
       var map = Map<String, dynamic>();
       map['action'] = _GET_ALL_ACTION;
-      final response = await http.post(ROOT, body: map);
+      final response = await http.post(Uri.parse(ROOT), body: map);
       if (response.statusCode == 200) {
         List<Evento> list = parseResponse(response.body);
         return list;

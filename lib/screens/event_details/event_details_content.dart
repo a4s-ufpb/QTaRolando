@@ -1,8 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:latlong/latlong.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:local_events/app_state.dart';
@@ -148,7 +148,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                               padding:
                                   const EdgeInsets.only(left: 16.0, bottom: 8),
                               child: Text(
-                                "${evento.punchLine1} ${evento.punchLine2}",
+                                "${evento.subtitle}",
                                 style: eventoDescription.copyWith(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w500,
@@ -187,8 +187,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                                         child: Center(
                                           child: Text(
                                             DateFormat("dd", "pt_BR").format(
-                                                DateTime.parse(
-                                                    evento.initialDate)),
+                                                    evento.initialDate),
                                             style: eventoSubtitle.copyWith(
                                               fontSize: 25,
                                               fontWeight: FontWeight.w500,
@@ -217,8 +216,8 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                                               capitalize(DateFormat(
                                                       "E, dd MMM, yyyy",
                                                       "pt_BR")
-                                                  .format(DateTime.parse(
-                                                      evento.initialDate))),
+                                                  .format(
+                                                      evento.initialDate)),
                                               style: eventLocationTextStyle
                                                   .copyWith(
                                                 fontSize: 22,
@@ -246,8 +245,8 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                                               Text(
                                                 DateFormat(
                                                         "dd MMM, yyy", "pt_BR")
-                                                    .format(DateTime.parse(
-                                                        evento.finalDate)),
+                                                    .format(
+                                                        evento.finalDate),
                                                 style: eventoSubtitle.copyWith(
                                                   fontWeight: FontWeight.w400,
                                                   color: widget.themeIsDark
@@ -406,9 +405,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                                 height: 250,
                                 child: FlutterMap(
                                   options: new MapOptions(
-                                    center: new LatLng(
-                                        getCoodenadas(evento.location)[0],
-                                        getCoodenadas(evento.location)[1]),
+                                    center: LatLng(getCoodenadas(evento.location)[0], getCoodenadas(evento.location)[1]),
                                     zoom: 15.0,
                                     maxZoom: 17.0,
                                   ),
@@ -422,10 +419,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                                         new Marker(
                                           width: 80.0,
                                           height: 80.0,
-                                          point: new LatLng(
-                                              getCoodenadas(evento.location)[0],
-                                              getCoodenadas(
-                                                  evento.location)[1]),
+                                          point: LatLng(getCoodenadas(evento.location)[0], getCoodenadas(evento.location)[1]),
                                           builder: (ctx) => new Container(
                                             decoration: BoxDecoration(
                                                 color: widget

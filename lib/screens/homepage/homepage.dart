@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:local_events/app/app_module.dart';
 import 'package:local_events/app/app_repository.dart';
 import 'package:local_events/app_state.dart';
 import 'package:local_events/models/category.dart';
@@ -32,8 +31,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var repository = AppModule.to.get<AppRepository>();
-  Stream<List<Evento>> _eventos;
+  var repository = AppRepository();
+  Future<List<Evento>> _eventos;
 
   final _controllerCategories = ScrollController();
   final _controllerEventos = ScrollController();
@@ -92,7 +91,7 @@ class _HomePageState extends State<HomePage> {
 
   _getEventos() {
     setState(() {
-      _eventos = repository.getEventosStream();
+      _eventos = repository.getEventos();
     });
   }
 
@@ -106,7 +105,6 @@ class _HomePageState extends State<HomePage> {
 
   Future<Null> refreshList() async {
     await Future.delayed(Duration(seconds: 2));
-
     _getEventos();
 
     return null;
@@ -308,7 +306,7 @@ class _HomePageState extends State<HomePage> {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: SvgPicture.asset(
-                                  "assets/icons/preferences.svg",
+                                  "assets/icons/filter_alt_black_24dp.svg",
                                   color: (appState.filterByDate.isNotEmpty ||
                                           appState.filterByType.isNotEmpty)
                                       ? Theme.of(context).primaryColor
@@ -347,8 +345,8 @@ class _HomePageState extends State<HomePage> {
                           backgroundColor: Theme.of(context).primaryColor,
                           color: Colors.grey[400],
                           onRefresh: refreshList,
-                          child: StreamBuilder<List<Evento>>(
-                            stream: _eventos,
+                          child: FutureBuilder<List<Evento>>(
+                            future: _eventos,
                             builder: (context, snapshot) {
                               if (hasInternet && !snapshot.hasData) {
                                 if (!snapshot.hasData)
@@ -387,8 +385,7 @@ class _HomePageState extends State<HomePage> {
                                           margin: EdgeInsets.symmetric(
                                               horizontal: 16),
                                           child: ListEventsWidget(
-                                            listaEventos:
-                                                snapshot.data.toList(),
+                                            listaEventos:snapshot.data.toList(),
                                             appState: appState,
                                             themeIsDark: themeIsDark,
                                             searchResult: searchResult,
