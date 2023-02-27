@@ -7,7 +7,7 @@ class EventDetailsBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final evento = Provider.of<Evento>(context);
+    final evento = Provider.of<Event>(context);
 
     return Align(
       alignment: Alignment.topCenter,

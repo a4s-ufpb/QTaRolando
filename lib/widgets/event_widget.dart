@@ -11,11 +11,11 @@ import 'package:local_events/screens/event_details/event_details_page.dart';
 import '../themes/app_images.dart';
 
 class EventWidget extends StatelessWidget {
-  final Evento evento;
+  final Event event;
   final AppState appState;
   final bool themeIsDark;
 
-  const EventWidget({Key key, this.evento, this.appState, this.themeIsDark})
+  const EventWidget({Key key, this.event, this.appState, this.themeIsDark})
       : super(key: key);
 
   @override
@@ -34,7 +34,7 @@ class EventWidget extends StatelessWidget {
         Navigator.of(context).push(
           CupertinoPageRoute(
             builder: (context) => EventDetailsPage(
-              evento: evento,
+              event: event,
               appState: appState,
               themeIsDark: themeIsDark,
             ),
@@ -76,7 +76,7 @@ class EventWidget extends StatelessWidget {
                         ),
                       ),
                       child: FadeInImage.assetNetwork(
-                        image: evento.imagePath,
+                        image: event.imagePath,
                         width: MediaQuery.of(context).size.width,
                         height: 125,
                         fit: BoxFit.cover,
@@ -92,7 +92,7 @@ class EventWidget extends StatelessWidget {
                         alignment: Alignment.topLeft,
                         child: Stack(
                           children: <Widget>[
-                            if (evento.initialDate.year != DateTime.now().year)
+                            if (event.initialDate.year != DateTime.now().year)
                               Container(
                                 width: 76,
                                 height: 55,
@@ -122,7 +122,7 @@ class EventWidget extends StatelessWidget {
                                     quarterTurns: 1,
                                     child: RichText(
                                       text: TextSpan(
-                                        text: "${evento.initialDate.year}",
+                                        text: "${event.initialDate.year}",
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline2
@@ -159,7 +159,7 @@ class EventWidget extends StatelessWidget {
                                 children: <Widget>[
                                   Text(
                                     DateFormat("dd", "pt_BR")
-                                        .format(evento.initialDate),
+                                        .format(event.initialDate),
                                     style: Theme.of(context)
                                         .textTheme
                                         .headline2
@@ -170,7 +170,7 @@ class EventWidget extends StatelessWidget {
                                   ),
                                   Text(
                                     capitalize(DateFormat.MMM("pt_BR")
-                                        .format(evento.initialDate)),
+                                        .format(event.initialDate)),
                                     style: Theme.of(context)
                                         .textTheme
                                         .headline2
@@ -204,7 +204,7 @@ class EventWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            evento.title,
+                            event.title,
                             style: Theme.of(context).textTheme.headline2,
                           ),
                           SizedBox(height: 5),
@@ -227,7 +227,7 @@ class EventWidget extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.only(right: 16.0),
                                     child: Text(
-                                      getLocation(evento.location),
+                                      getLocation(event.location),
                                       style:
                                           Theme.of(context).textTheme.headline3,
                                     ),
@@ -280,8 +280,8 @@ class EventWidget extends StatelessWidget {
         ),
       ),
       onPressed: () {
-        if (icon == FontAwesomeIcons.calendarAlt) addEventToCalendar(evento);
-        if (icon == FontAwesomeIcons.shareAlt) share(context, evento);
+        if (icon == FontAwesomeIcons.calendarAlt) addEventToCalendar(event);
+        if (icon == FontAwesomeIcons.shareAlt) share(context, event);
       },
     );
   }

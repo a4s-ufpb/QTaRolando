@@ -1,45 +1,45 @@
-import 'package:add_2_calendar/add_2_calendar.dart';
+import 'package:add_2_calendar/add_2_calendar.dart' as calendar;
 import 'package:flutter/material.dart';
 import 'package:local_events/functions/utils_functions.dart';
 import 'package:local_events/models/event.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-void share(BuildContext context, Evento evento) {
+void share(BuildContext context, Event event) {
   final RenderBox box = context.findRenderObject();
   final String text =
-      "${evento.title} - ${evento.subtitle}\nPara mais informações acesse: ${evento.site}";
+      "${event.title} - ${event.subtitle}\nPara mais informações acesse: ${event.site}";
   Share.share(
     text,
-    subject: evento.description,
+    subject: event.description,
     sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size,
   );
 }
 
-void addEventToCalendar(Evento evento) {
-  final Event event = Event(
-    title: evento.title,
-    description: evento.description,
-    location: getLocation(evento.location),
-    startDate: evento.initialDate,
-    endDate: evento.finalDate,
+void addEventToCalendar(Event event) {
+  final calendar.Event calendarEvent = calendar.Event(
+    title: event.title,
+    description: event.description,
+    location: getLocation(event.location),
+    startDate: event.initialDate,
+    endDate: event.finalDate,
   );
-  Add2Calendar.addEvent2Cal(event);
+  calendar.Add2Calendar.addEvent2Cal(calendarEvent);
 }
 
-void call(Evento evento) async {
-  launch('tel:${evento.phone.toString()}');
+void call(Event event) async {
+  launch('tel:${event.phone.toString()}');
 }
 
-void goToWebsite(Evento evento) async {
-  if (await canLaunch(evento.site)) {
-    await launch(evento.site);
+void goToWebsite(Event event) async {
+  if (await canLaunch(event.site)) {
+    await launch(event.site);
   }
 }
 
-void launchMapsUrl(Evento evento) async {
-  final coordenadas = getLocation(evento.location);
-  final url = 'https://www.google.com/maps/search/?api=1&query=$coordenadas';
+void launchMapsUrl(Event event) async {
+  final coordinates = event.coordinates;
+  final url = 'https://www.google.com/maps/search/?api=1&query=${coordinates.latitude},${coordinates.longitude}';
   if (await canLaunch(url)) {
     await launch(url);
   } else {

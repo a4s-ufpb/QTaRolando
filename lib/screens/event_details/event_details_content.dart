@@ -27,7 +27,7 @@ class EventDetailsContent extends StatefulWidget {
 class _EventDetailsContentState extends State<EventDetailsContent> {
   @override
   Widget build(BuildContext context) {
-    final evento = Provider.of<Evento>(context);
+    final event = Provider.of<Event>(context);
 
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -70,7 +70,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                           bottomRight: Radius.circular(30),
                         ),
                         child: FadeInImage.assetNetwork(
-                          image: evento.imagePath,
+                          image: event.imagePath,
                           width: MediaQuery.of(context).size.width,
                           height: 125,
                           fit: BoxFit.cover,
@@ -134,7 +134,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                               padding:
                                   const EdgeInsets.only(left: 16.0, top: 18),
                               child: Text(
-                                evento.title,
+                                event.title,
                                 style: eventwhiteTitleTextStyle.copyWith(
                                   fontSize: 30,
                                   fontWeight: FontWeight.w600,
@@ -148,7 +148,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                               padding:
                                   const EdgeInsets.only(left: 16.0, bottom: 8),
                               child: Text(
-                                "${evento.subtitle}",
+                                "${event.subtitle}",
                                 style: eventoDescription.copyWith(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w500,
@@ -187,7 +187,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                                         child: Center(
                                           child: Text(
                                             DateFormat("dd", "pt_BR").format(
-                                                    evento.initialDate),
+                                                    event.initialDate),
                                             style: eventoSubtitle.copyWith(
                                               fontSize: 25,
                                               fontWeight: FontWeight.w500,
@@ -217,7 +217,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                                                       "E, dd MMM, yyyy",
                                                       "pt_BR")
                                                   .format(
-                                                      evento.initialDate)),
+                                                      event.initialDate)),
                                               style: eventLocationTextStyle
                                                   .copyWith(
                                                 fontSize: 22,
@@ -246,7 +246,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                                                 DateFormat(
                                                         "dd MMM, yyy", "pt_BR")
                                                     .format(
-                                                        evento.finalDate),
+                                                        event.finalDate),
                                                 style: eventoSubtitle.copyWith(
                                                   fontWeight: FontWeight.w400,
                                                   color: widget.themeIsDark
@@ -299,7 +299,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 16.0),
                                       child: Text(
-                                        getLocation(evento.location),
+                                        getLocation(event.location),
                                         style: eventoSubtitle.copyWith(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500,
@@ -313,7 +313,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                                 ],
                               ),
                             ),
-                            if (evento.description != null)
+                            if (event.description != null)
                               Padding(
                                 padding: const EdgeInsets.only(
                                   left: 16,
@@ -336,7 +336,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 16, vertical: 8),
                               child: ReadMoreText(
-                                evento.description,
+                                event.description,
                                 trimLines: 4,
                                 colorClickableText:
                                     widget.appState.colorSecundary,
@@ -352,7 +352,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                                 ),
                               ),
                             ),
-                            if (evento.location.split(",").length > 1)
+                            if (event.location.split(",").length > 1)
                               Padding(
                                 padding: const EdgeInsets.only(
                                   left: 16,
@@ -370,7 +370,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                                     ),
                                     Spacer(),
                                     InkWell(
-                                      onTap: () => launchMapsUrl(evento),
+                                      onTap: () => launchMapsUrl(event),
                                       child: Row(
                                         children: <Widget>[
                                           Text(
@@ -395,7 +395,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                                   ],
                                 ),
                               ),
-                            if (evento.location.split(",").length > 1)
+                            if (event.location.split(",").length > 1)
                               Container(
                                 padding: EdgeInsets.symmetric(
                                   horizontal: 16,
@@ -405,21 +405,21 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                                 height: 250,
                                 child: FlutterMap(
                                   options: new MapOptions(
-                                    center: LatLng(getCoodenadas(evento.location)[0], getCoodenadas(evento.location)[1]),
+                                    center: LatLng(getCoodenadas(event.location)[0], getCoodenadas(event.location)[1]),
                                     zoom: 15.0,
                                     maxZoom: 17.0,
                                   ),
-                                  layers: [
-                                    new TileLayerOptions(
+                                  children: [
+                                    new TileLayer(
                                         urlTemplate:
                                             "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                                         subdomains: ['a', 'b', 'c']),
-                                    new MarkerLayerOptions(
+                                    new MarkerLayer(
                                       markers: [
                                         new Marker(
                                           width: 80.0,
                                           height: 80.0,
-                                          point: LatLng(getCoodenadas(evento.location)[0], getCoodenadas(evento.location)[1]),
+                                          point: LatLng(getCoodenadas(event.location)[0], getCoodenadas(event.location)[1]),
                                           builder: (ctx) => new Container(
                                             decoration: BoxDecoration(
                                                 color: widget
@@ -472,8 +472,8 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                                         .copyWith(fontSize: 22),
                                   ),
                                   SizedBox(height: 8),
-                                  Text(
-                                    evento.site,
+                                  if(event.site != null) Text(
+                                    event.site,
                                     style: eventoDescription.copyWith(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w300,
@@ -481,7 +481,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                                           ? Colors.white38
                                           : Color(0xFF444444),
                                     ),
-                                  ),
+                                  )
                                 ],
                               ),
                             ),
@@ -512,7 +512,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                     Padding(
                       padding: const EdgeInsets.only(left: 8),
                       child: _buildFloatingButton(
-                          evento,
+                          event,
                           FontAwesomeIcons.calendarAlt,
                           Color(0xFF80A2FC),
                           Color(0xFF798CF5)),
@@ -520,7 +520,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: _buildFloatingButton(
-                          evento,
+                          event,
                           FontAwesomeIcons.link,
                           Theme.of(context).buttonColor,
                           Theme.of(context).buttonColor),
@@ -528,7 +528,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                     Padding(
                       padding: const EdgeInsets.only(right: 16.0, left: 8),
                       child: _buildFloatingButton(
-                          evento,
+                          event,
                           FontAwesomeIcons.shareAlt,
                           widget.appState.colorPrimary,
                           widget.appState.colorSecundary),
@@ -544,7 +544,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
   }
 
   Widget _buildFloatingButton(
-      Evento evento, IconData icon, Color colorPrimary, Color colorSecundary) {
+      Event event, IconData icon, Color colorPrimary, Color colorSecundary) {
     return FloatingActionButton(
       heroTag: icon.toString(),
       backgroundColor: Theme.of(context).primaryColor,
@@ -562,9 +562,9 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
         ),
       ),
       onPressed: () {
-        if (icon == FontAwesomeIcons.calendarAlt) addEventToCalendar(evento);
-        if (icon == FontAwesomeIcons.link) goToWebsite(evento);
-        if (icon == FontAwesomeIcons.shareAlt) share(context, evento);
+        if (icon == FontAwesomeIcons.calendarAlt) addEventToCalendar(event);
+        if (icon == FontAwesomeIcons.link) goToWebsite(event);
+        if (icon == FontAwesomeIcons.shareAlt) share(context, event);
       },
     );
   }

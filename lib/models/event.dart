@@ -1,51 +1,58 @@
-class Evento {
+import 'package:local_events/models/coordinates.dart';
+
+class Event {
   final int id;
   final String title;
   final String subtitle;
-  final int categoryId;
+  final List categoriesIds;
   final String description;
   final DateTime initialDate;
   final DateTime finalDate;
   final String imagePath;
   final String location;
+  final Coordinates coordinates;
   final String phone;
   final String site;
-  final List categoryIds, galleryImages;
 
-  Evento(
+  Event(
       {this.id,
       this.title,
       this.subtitle,
-      this.categoryId,
+      this.categoriesIds,
       this.description,
       this.initialDate,
       this.finalDate,
       this.imagePath,
       this.location,
+      this.coordinates,
       this.phone,
-      this.site,
-      this.categoryIds,
-      this.galleryImages});
+      this.site});
 
-  factory Evento.fromJson(Map<String, dynamic> json) {
-    return Evento(
+  factory Event.fromJson(Map<String, dynamic> json) {
+    return Event(
+      id: json['id'],
       title: json["title"] as String,
       subtitle: json["subtitle"] as String,
-      categoryIds: [0, json["categoryId"]],
+      categoriesIds: [0, json["categories"]],
       description: json["description"] as String,
       initialDate: DateTime.parse(json["initialDate"]),
       finalDate: DateTime.parse(json["finalDate"]),
       imagePath: json["imagePath"] as String,
       location: json["location"] as String,
+      coordinates: Coordinates(
+        latitude: 0,
+        longitude: 0,
+      ),
       phone: json["phone"] as String,
       site: json["site"] as String,
     );
   }
 
   Map<String, dynamic> toJson() => {
+        "id": id,
         "title": title,
         "subtitle": subtitle,
-        "categoryId": categoryIds[1] as int,
+        "categories": categoriesIds,
         "description": description,
         "initialDate": initialDate,
         "finalDate": finalDate,
@@ -55,8 +62,9 @@ class Evento {
         "site": site,
       };
 
-  static List<Evento> fromJsonList(List list) {
+  static List<Event> fromJsonList(List list) {
     if (list == null) return null;
-    return list.map((evento) => Evento.fromJson(evento)).toList();
+
+    return list.map((evento) => Event.fromJson(evento)).toList();
   }
 }

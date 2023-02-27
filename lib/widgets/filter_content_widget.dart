@@ -148,8 +148,9 @@ class _FilterContentWidgetState extends State<FilterContentWidget> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: Wrap(
+                    direction: Axis.horizontal,
+                    spacing: 2,
                     children: _buildFilterByDate(),
                   ),
                 ),

@@ -5,8 +5,6 @@ ThemeData darkTheme = ThemeData(
     accentColor: Colors.white10,
     buttonColor: Colors.white,
     fontFamily: "Caros",
-    textSelectionHandleColor: Colors.white,
-    textSelectionColor: Colors.white.withOpacity(0.5),
     textTheme: TextTheme(
       headline1: TextStyle(
         fontSize: 14,
@@ -33,15 +31,13 @@ ThemeData darkTheme = ThemeData(
         fontWeight: FontWeight.w500,
       ),
     ),
-    appBarTheme: AppBarTheme(color: Color(0xff1f655d)));
+    appBarTheme: AppBarTheme(color: Color(0xff1f655d)), textSelectionTheme: TextSelectionThemeData(selectionColor: Colors.white.withOpacity(0.5), selectionHandleColor: Colors.white,));
 
 ThemeData lightTheme = ThemeData(
     primaryColor: Colors.white,
     accentColor: Colors.grey[300],
     buttonColor: Color(0xFF212226),
     fontFamily: "Caros",
-    textSelectionHandleColor: Color(0xFF444444),
-    textSelectionColor: Color(0xFF212226).withOpacity(0.5),
     textTheme: TextTheme(
       headline1: TextStyle(
         fontSize: 14,
@@ -70,7 +66,7 @@ ThemeData lightTheme = ThemeData(
     ),
     appBarTheme: AppBarTheme(
         color: Color(0xff1f655d),
-        actionsIconTheme: IconThemeData(color: Colors.white)));
+        actionsIconTheme: IconThemeData(color: Colors.white)), textSelectionTheme: TextSelectionThemeData(selectionColor: Color(0xFF212226).withOpacity(0.5), selectionHandleColor: Color(0xFF444444),));
 
 final TextStyle fadedTextStyle = TextStyle(
   fontSize: 14,

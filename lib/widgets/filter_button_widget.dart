@@ -19,63 +19,65 @@ class FilterButton extends StatefulWidget {
 class _FilterButtonState extends State<FilterButton> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Theme.of(context).buttonColor,
-          width: 1,
+    return IntrinsicWidth(
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Theme.of(context).buttonColor,
+            width: 1,
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(50)),
+          gradient: LinearGradient(
+            colors: widget.isSelected
+                ? [
+                    widget.appState.colorPrimary,
+                    widget.appState.colorSecundary,
+                  ]
+                : [
+                    Colors.transparent,
+                    Colors.transparent,
+                  ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
         ),
-        borderRadius: BorderRadius.all(Radius.circular(50)),
-        gradient: LinearGradient(
-          colors: widget.isSelected
-              ? [
-                  widget.appState.colorPrimary,
-                  widget.appState.colorSecundary,
-                ]
-              : [
-                  Colors.transparent,
-                  Colors.transparent,
-                ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-      ),
-      child: Row(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 2.0),
-            child: Center(
-              child: Text(
-                widget.filter.name,
-                style: widget.isSelected
-                    ? Theme.of(context).textTheme.headline1.copyWith(
-                          color: Theme.of(context).primaryColor,
-                        )
-                    : Theme.of(context).textTheme.headline1,
+        child: Row(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(right: 2.0),
+              child: Center(
+                child: Text(
+                  widget.filter.name,
+                  style: widget.isSelected
+                      ? Theme.of(context).textTheme.headline1.copyWith(
+                            color: Theme.of(context).primaryColor,
+                          )
+                      : Theme.of(context).textTheme.headline1,
+                ),
               ),
             ),
-          ),
-          Container(
-            padding: const EdgeInsets.only(left: 8),
-            decoration: BoxDecoration(
-                border: Border(
-                    left: BorderSide(
-              color: Theme.of(context).buttonColor,
-            ))),
-            child: widget.isSelected
-                ? FaIcon(
-                    FontAwesomeIcons.times,
-                    size: selectedCategoryTextStyle.fontSize,
-                    color: Theme.of(context).buttonColor.withOpacity(0.5),
-                  )
-                : FaIcon(
-                    FontAwesomeIcons.check,
-                    size: selectedCategoryTextStyle.fontSize,
-                    color: Theme.of(context).buttonColor.withOpacity(0.5),
-                  ),
-          ),
-        ],
+            Container(
+              padding: const EdgeInsets.only(left: 8),
+              decoration: BoxDecoration(
+                  border: Border(
+                      left: BorderSide(
+                color: Theme.of(context).buttonColor,
+              ))),
+              child: widget.isSelected
+                  ? FaIcon(
+                      FontAwesomeIcons.times,
+                      size: selectedCategoryTextStyle.fontSize,
+                      color: Theme.of(context).buttonColor.withOpacity(0.5),
+                    )
+                  : FaIcon(
+                      FontAwesomeIcons.check,
+                      size: selectedCategoryTextStyle.fontSize,
+                      color: Theme.of(context).buttonColor.withOpacity(0.5),
+                    ),
+            ),
+          ],
+        ),
       ),
     );
   }

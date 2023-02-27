@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppState extends ChangeNotifier {
-  int selectedCategoryId = 0;
+  int selectedCategoryId;
   String filterByDate = "";
   String filterByType = "";
   Color colorPrimary = Color(0xFFED8B4E);
@@ -23,5 +23,9 @@ class AppState extends ChangeNotifier {
   void UpdateFilterByType(String filterSelected) {
     this.filterByType = filterSelected;
     notifyListeners();
+  }
+
+  bool equals(AppState appState){
+    return this.filterByDate == appState.filterByDate && this.selectedCategoryId == appState.selectedCategoryId && this.filterByType == appState.filterByType;
   }
 }
