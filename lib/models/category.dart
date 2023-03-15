@@ -65,21 +65,21 @@ final palestrasCategory = Category(
   colorSecundary: Color(0xFF3BB2B8),
 );
 
-// final simposiosCategory = Category(
-//   categoryId: 6,
-//   name: "Simpósios",
-//   icon: FontAwesomeIcons.solidComments,
-//   colorPrimary: Color(0xFF184E68),
-//   colorSecundary: Color(0xFF57CA85),
-// );
+final sportCategory = Category(
+  categoryId: 6,
+  name: "Esporte",
+  icon: FontAwesomeIcons.solidCommentAlt,
+  colorPrimary: Color(0xFFE6E642),
+  colorSecundary: Color(0xFFE71717),
+);
 
-// final tecnologiaCategory = Category(
-//   categoryId: 7,
-//   name: "Tecnologia",
-//   icon: FontAwesomeIcons.microchip,
-//   colorPrimary: Color(0xFF17EAD9),
-//   colorSecundary: Color(0xFF6078EA),
-// );
+final religionCategory = Category(
+  categoryId: 7,
+  name: "Religião & Espiritualidade",
+  icon: FontAwesomeIcons.solidComments,
+  colorPrimary: Color(0xFF24C414),
+  colorSecundary: Color(0xFF57CA85),
+);
 
 final categories = [
   tudoCategory,
@@ -88,6 +88,6 @@ final categories = [
   congressoCategory,
   cursosCategory,
   palestrasCategory,
-  // simposiosCategory,
-  // tecnologiaCategory,
+  sportCategory,
+  religionCategory
 ];

@@ -63,9 +63,11 @@ class _HomePageState extends State<HomePage> {
       appState = Provider.of<AppState>(context, listen: false);
       _fetchPage(appState, pageKey);
     }
+
     _pagingController.addPageRequestListener((pageKey) {
       print("Entrou no listener");
       AppState newAppState = Provider.of<AppState>(context, listen: false);
+
       if(newAppState.equals(appState)) {
         appState = newAppState;
         _fetchPage(appState, pageKey);
@@ -96,7 +98,7 @@ class _HomePageState extends State<HomePage> {
         dateType = "ESTE_MES";
       }
 
-      final newItems = await eventServices.getEventsFiltered(
+      final events = await eventServices.getEventsFiltered(
         title: searchResult,
         page: pageKey,
         pageSize: _pageSize,
@@ -104,6 +106,18 @@ class _HomePageState extends State<HomePage> {
         categoryId: appState.selectedCategoryId,
         dateType: dateType,
       );
+
+      var newItems = events.where((event) {
+        // If _pagingController.itemList is null, it is initialized with an empty list
+        if (_pagingController.itemList == null) {
+          _pagingController.itemList = [];
+        }
+
+        // Checks if the event is already in the list and returns true if it is not
+        return !_pagingController.itemList.any((item) => item.id == event.id);
+      }).toList();
+
+      print('Filtered events: $newItems');
 
       final isLastPage = eventServices.isLast;
       print("PageKey: ${pageKey}  Total Pages ${eventServices.totalPages}");

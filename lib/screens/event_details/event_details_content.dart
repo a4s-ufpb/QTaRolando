@@ -32,6 +32,8 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
+    final List<double> coordinates = getCoordinates(event.location);
+
     return Scaffold(
       backgroundColor: widget.themeIsDark ? Color(0xFF212226) : Colors.white,
       resizeToAvoidBottomInset: false,
@@ -405,7 +407,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                                 height: 250,
                                 child: FlutterMap(
                                   options: new MapOptions(
-                                    center: LatLng(getCoodenadas(event.location)[0], getCoodenadas(event.location)[1]),
+                                    center: LatLng(coordinates[0], coordinates[1]),
                                     zoom: 15.0,
                                     maxZoom: 17.0,
                                   ),
@@ -419,7 +421,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                                         new Marker(
                                           width: 80.0,
                                           height: 80.0,
-                                          point: LatLng(getCoodenadas(event.location)[0], getCoodenadas(event.location)[1]),
+                                          point: LatLng(coordinates[0], coordinates[1]),
                                           builder: (ctx) => new Container(
                                             decoration: BoxDecoration(
                                                 color: widget

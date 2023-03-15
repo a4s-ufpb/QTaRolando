@@ -1,3 +1,6 @@
+import 'package:collection/collection.dart';
+import 'package:local_events/models/coordinates.dart';
+
 String capitalize(String string) {
   if (string == null) {
     throw ArgumentError("string: $string");
@@ -11,14 +14,32 @@ String capitalize(String string) {
 }
 
 String getLocation(String location) {
-  final eventoLocation = location.split(",");
-  if (eventoLocation.length > 1) {
-    return eventoLocation[0] + "," + eventoLocation[1];
+  final eventLocation = location.split("@");
+  if(eventLocation.equals(["remote"])) {
+    return 'Remoto';
+  } else {
+    return "Presencial";
   }
-  return eventoLocation[0];
 }
 
-List<double> getCoodenadas(String location) {
-  final eventoLocation = location.split(",");
-  return [double.parse(eventoLocation[2]), double.parse(eventoLocation[3])];
+List<double> getCoordinates(String location) {
+  var coordinates = Coordinates();
+
+  if(location == "remote"){
+    coordinates = Coordinates(
+      latitude: 0,
+      longitude: 0,
+    );
+  } else {
+    final regex = RegExp(r'@-?\d+\.\d+,-?\d+\.\d+\b');
+    final match = regex.firstMatch(location);
+    final coordinatesString = match.group(0).replaceAll("@", "").split(",");
+
+    coordinates = Coordinates(
+      latitude: double.parse(coordinatesString[0]),
+      longitude: double.parse(coordinatesString[1]),
+    );
+  }
+
+  return [coordinates.latitude, coordinates.longitude];
 }

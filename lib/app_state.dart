@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppState extends ChangeNotifier {
-  int selectedCategoryId;
+  int selectedCategoryId = 0;
   String filterByDate = "";
   String filterByType = "";
   Color colorPrimary = Color(0xFFED8B4E);
