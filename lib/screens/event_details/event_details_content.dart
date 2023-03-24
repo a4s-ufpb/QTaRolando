@@ -460,7 +460,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                                   ],
                                 ),
                               ),
-                            Padding(
+                            if(event.site != null) Padding(
                               padding: EdgeInsets.only(
                                   left: 16, right: 16, top: 8, bottom: 16),
                               child: Column(
@@ -474,7 +474,7 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                                         .copyWith(fontSize: 22),
                                   ),
                                   SizedBox(height: 8),
-                                  if(event.site != null) Text(
+                                  Text(
                                     event.site,
                                     style: eventoDescription.copyWith(
                                       fontSize: 15,

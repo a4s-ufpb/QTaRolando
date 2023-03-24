@@ -1,6 +1,7 @@
 import 'package:add_2_calendar/add_2_calendar.dart' as calendar;
 import 'package:flutter/material.dart';
 import 'package:local_events/functions/utils_functions.dart';
+import 'package:local_events/models/coordinates.dart';
 import 'package:local_events/models/event.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -8,7 +9,8 @@ import 'package:url_launcher/url_launcher.dart';
 void share(BuildContext context, Event event) {
   final RenderBox box = context.findRenderObject();
   final String text =
-      "${event.title} - ${event.subtitle}\nPara mais informações acesse: ${event.site}";
+      "${event.title} - ${event.subtitle}\nPara mais informações acesse: ${event
+      .site.isNotEmpty? event.site : "Informação não disponível"}";
   Share.share(
     text,
     subject: event.description,
@@ -28,18 +30,24 @@ void addEventToCalendar(Event event) {
 }
 
 void call(Event event) async {
-  launch('tel:${event.phone.toString()}');
+  if(event.phone.isNotEmpty){
+    launch('tel:${event.phone.toString()}');
+  }
 }
 
 void goToWebsite(Event event) async {
-  if (await canLaunch(event.site)) {
-    await launch(event.site);
+  if(event.site.isNotEmpty){
+    if (await canLaunch(event.site)) {
+      await launch(event.site);
+    }
   }
 }
 
 void launchMapsUrl(Event event) async {
-  final coordinates = event.coordinates;
-  final url = 'https://www.google.com/maps/search/?api=1&query=${coordinates.latitude},${coordinates.longitude}';
+  Coordinates coordinates = Coordinates(latitude: getCoordinates(event.location)[0],
+      longitude: getCoordinates(event.location)[1]);
+  final url = 'https://www.google.com/maps/search/?api=1&query=${coordinates.latitude},'
+      '${coordinates.longitude}';
   if (await canLaunch(url)) {
     await launch(url);
   } else {
