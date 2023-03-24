@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:collection/collection.dart';
 import 'package:local_events/models/coordinates.dart';
 
@@ -43,3 +46,10 @@ List<double> getCoordinates(String location) {
 
   return [coordinates.latitude, coordinates.longitude];
 }
+
+Future<String> imageToBase64(File imageFile) async {
+  List<int> imageBytes = await imageFile.readAsBytes();
+  String base64Image = base64Encode(imageBytes);
+  return base64Image;
+}
+
