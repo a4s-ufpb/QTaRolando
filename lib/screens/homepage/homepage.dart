@@ -104,7 +104,7 @@ class _HomePageState extends State<HomePage> {
         pageSize: _pageSize,
         modality: appState.filterByType,
         categoryId: appState.selectedCategoryId,
-        dateType: dateType,
+        dateType: appState.selectedCategoryId == 0? "Todos" : dateType,
       );
 
       var newItems = events.where((event) {
