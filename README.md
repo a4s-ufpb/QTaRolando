@@ -2,6 +2,12 @@
 
 Este é um app desenvolvido, em Flutter e Dart, para o projeto de Extensão Apps4Society do Campus IV - UFPB, em Rio Tinto, cujo o objetivo é oferecer, de forma simples e fácil, tanto a visualização quanto as informações de eventos, inicialmente com o foco aos relacionados a UFPB, no estado da Paraíba.
 
+## Baixar última versão do APK:
+Clique no icone abaixo para baixar:<br><br>
+<a href="https://drive.google.com/file/d/1b3hGxYOGe9XudJNIPAyNUHcLvaKuoe6r/view">
+<img src="./assets/icons/app_icon.png" alt="App Icon" width="120"></a> 
+
+
 ### QTáRolando? Screenshots
 
 <table>
@@ -49,12 +55,15 @@ Após baixar/clonar o projeto abra a pasta do projeto em seu ambiente de desenvo
 flutter pub get
 ```
 #### Observação
-Antes de iniciar o aplicativo, certifique-se de ter colocado o endereço da API QTAROLANDO-API no arquivo app_repository, que está localizado na pasta: lib/app/app_repository.dart
-Dentro do arquivo, procure o trecho de código:
-```{sh}
-var response = await dio.get("{QTAROLANDO-API URL}/api/events");
+Antes de iniciar o aplicativo, certifique-se de ter criado na raís do projeto (Ao lado dos arquivos pubspec.yaml e README.md) um arquivo com esse nome:
 ```
-Substitua {QTAROLANDO-API URL} pelo endereço da API QTAROLANDO-API, e pronto!
+.env
+```
+Dentro desse aplicativo crie essa váriavel com o link para a QTaRolandoAPI
+```
+#Substitua {LinkDaAPIQTaRolandoAPI} pelo link da API QTaRolandoAPI
+API_URL={LinkDaAPIQTaRolandoAPI}
+```
 
 ### Com um dispositivo conectado ou emulador aberto, execute o seguinte comando:
 ```{sh}
