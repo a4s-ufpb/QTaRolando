@@ -4,9 +4,9 @@ Este é um app desenvolvido, em Flutter e Dart, para o projeto de Extensão Apps
 
 ## Baixar última versão do APK:
 Clique no icone abaixo para baixar:<br><br>
-<a href="https://drive.google.com/file/d/1b3hGxYOGe9XudJNIPAyNUHcLvaKuoe6r/view">
-<img src="./assets/icons/app_icon.png" alt="App Icon" width="120"></a> 
-
+<a href="https://drive.google.com/file/d/1b3hGxYOGe9XudJNIPAyNUHcLvaKuoe6r/view" target="_blank">
+  <img src="./assets/icons/app_icon.png" alt="App Icon" width="120">
+</a>
 
 ### QTáRolando? Screenshots
 
