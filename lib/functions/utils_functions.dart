@@ -1,7 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:local_events/models/coordinates.dart';
 
 String capitalize(String string) {
@@ -28,28 +31,27 @@ String getLocation(String location) {
 List<double> getCoordinates(String location) {
   var coordinates = Coordinates();
 
-  if(location == "remote"){
-    coordinates = Coordinates(
-      latitude: 0,
-      longitude: 0,
-    );
-  } else {
-    final regex = RegExp(r'@-?\d+\.\d+,-?\d+\.\d+\b');
-    final match = regex.firstMatch(location);
-    final coordinatesString = match.group(0).replaceAll("@", "").split(",");
+  final regex = RegExp(r'@-?\d+\.\d+,-?\d+\.\d+\b');
+  final match = regex.firstMatch(location);
 
+  if (match != null) {
+    final coordinatesString = match.group(0).replaceAll("@", "").split(",");
     coordinates = Coordinates(
       latitude: double.parse(coordinatesString[0]),
       longitude: double.parse(coordinatesString[1]),
     );
+  } else {
+    coordinates = Coordinates(
+      latitude: 0,
+      longitude: 0,
+    );
   }
+
 
   return [coordinates.latitude, coordinates.longitude];
 }
 
-Future<String> imageToBase64(File imageFile) async {
-  List<int> imageBytes = await imageFile.readAsBytes();
-  String base64Image = base64Encode(imageBytes);
-  return base64Image;
+Uint8List imageToBytes(String imageUrl) {
+  final bytes = base64.decode(imageUrl.replaceFirst(RegExp('data:image\\/.*;base64,'), ''));
+  return bytes.buffer.asUint8List();
 }
-
