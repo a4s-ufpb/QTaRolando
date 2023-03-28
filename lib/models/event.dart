@@ -1,4 +1,5 @@
-import 'package:local_events/functions/utils_functions.dart';
+import 'dart:io';
+
 import 'package:local_events/models/coordinates.dart';
 
 class Event {
@@ -9,7 +10,7 @@ class Event {
   final String description;
   final DateTime initialDate;
   final DateTime finalDate;
-  final String imagePath;
+  final String image;
   final String location;
   final Coordinates coordinates;
   final String phone;
@@ -23,7 +24,7 @@ class Event {
       this.description,
       this.initialDate,
       this.finalDate,
-      this.imagePath,
+      this.image,
       this.location,
       this.coordinates,
       this.phone,
@@ -38,7 +39,7 @@ class Event {
       description: json["description"] as String,
       initialDate: DateTime.parse(json["initialDate"]),
       finalDate: DateTime.parse(json["finalDate"]),
-      imagePath: imageToBase64(json["imagePath"]) as String,
+      image: json["imagePath"],
       location: json["location"] as String,
       coordinates: Coordinates(
         latitude: 0,
@@ -57,7 +58,7 @@ class Event {
         "description": description,
         "initialDate": initialDate,
         "finalDate": finalDate,
-        "imagePath": imagePath,
+        "imagePath": image,
         "location": location,
         "phone": phone,
         "site": site,
