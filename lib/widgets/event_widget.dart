@@ -14,12 +14,13 @@ class EventWidget extends StatelessWidget {
   final Event event;
   final AppState appState;
   final bool themeIsDark;
-
   const EventWidget({Key key, this.event, this.appState, this.themeIsDark})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final imageBytes = imageToBytes(event.image);
+
     return InkWell(
       focusColor: Colors.transparent,
       highlightColor: Colors.transparent,
@@ -35,6 +36,7 @@ class EventWidget extends StatelessWidget {
           CupertinoPageRoute(
             builder: (context) => EventDetailsPage(
               event: event,
+              imageBytes: imageBytes,
               appState: appState,
               themeIsDark: themeIsDark,
             ),
@@ -75,12 +77,11 @@ class EventWidget extends StatelessWidget {
                           ],
                         ),
                       ),
-                      child: FadeInImage.assetNetwork(
-                        image: event.imagePath,
-                        width: MediaQuery.of(context).size.width,
-                        height: 125,
-                        fit: BoxFit.cover,
-                        placeholder: AppImages.placeholder,
+                      child: Image.memory(
+                          imageBytes,
+                          width: MediaQuery.of(context).size.width,
+                          height: 125,
+                          fit: BoxFit.cover,
                       ),
                     ),
                   ),

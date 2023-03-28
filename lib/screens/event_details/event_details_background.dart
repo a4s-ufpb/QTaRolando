@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:local_events/functions/utils_functions.dart';
 import 'package:local_events/models/event.dart';
 import 'package:provider/provider.dart';
 
@@ -7,15 +8,17 @@ class EventDetailsBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final evento = Provider.of<Event>(context);
+    final event = Provider.of<Event>(context);
+
+    print(event.image);
 
     return Align(
       alignment: Alignment.topCenter,
       child: Hero(
-        tag: evento,
+        tag: event,
         child: Container(
-          child: Image.network(
-            evento.imagePath,
+          child: Image.memory(
+            imageToBytes(event.image),
             fit: BoxFit.cover,
             height: screenHeight * 0.4,
             width: screenWidth,

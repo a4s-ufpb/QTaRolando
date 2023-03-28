@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -16,8 +18,9 @@ import 'package:readmore/readmore.dart';
 class EventDetailsContent extends StatefulWidget {
   final AppState appState;
   final bool themeIsDark;
+  final Uint8List imageBytes;
 
-  const EventDetailsContent({Key key, this.appState, this.themeIsDark})
+  const EventDetailsContent({Key key, this.appState, this.themeIsDark, this.imageBytes})
       : super(key: key);
 
   @override
@@ -28,7 +31,6 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
   @override
   Widget build(BuildContext context) {
     final event = Provider.of<Event>(context);
-
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
@@ -71,12 +73,11 @@ class _EventDetailsContentState extends State<EventDetailsContent> {
                           bottomLeft: Radius.circular(30),
                           bottomRight: Radius.circular(30),
                         ),
-                        child: FadeInImage.assetNetwork(
-                          image: event.imagePath,
-                          width: MediaQuery.of(context).size.width,
-                          height: 125,
-                          fit: BoxFit.cover,
-                          placeholder: 'assets/images/placeholder.png',
+                        child: Image.memory(
+                            widget.imageBytes,
+                            width: MediaQuery.of(context).size.width,
+                            height: 125,
+                            fit: BoxFit.cover,
                         ),
                       ),
                     ),

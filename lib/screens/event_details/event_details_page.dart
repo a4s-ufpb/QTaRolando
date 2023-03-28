@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:local_events/models/event.dart';
 import 'package:provider/provider.dart';
@@ -9,9 +11,10 @@ class EventDetailsPage extends StatelessWidget {
   final Event event;
   final AppState appState;
   final bool themeIsDark;
+  final Uint8List imageBytes;
 
   const EventDetailsPage(
-      {Key key, this.event, this.appState, this.themeIsDark})
+      {Key key, this.event, this.appState, this.themeIsDark, this.imageBytes})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -23,6 +26,7 @@ class EventDetailsPage extends StatelessWidget {
           children: <Widget>[
             //EventDetailsBackground(),
             EventDetailsContent(
+              imageBytes: imageBytes,
               appState: appState,
               themeIsDark: this.themeIsDark,
             ),
